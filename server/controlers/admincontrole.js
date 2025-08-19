@@ -2,40 +2,66 @@ import jwt from "jsonwebtoken";
 import Blog from "../models/blog.js";
 import Comment from "../models/comments.js";
 
-// Hardcoded admin accounts
-const ADMIN_ACCOUNTS = [
+// Load admin accounts from environment variables (supports one or many)
+// Options:
+// - Single admin: ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME (optional)
+// - Multiple admins: ADMIN_EMAILS, ADMIN_PASSWORDS, ADMIN_NAMES (comma-separated)
+const loadEnvAdminAccounts = () => {
+    const envAccounts = [];
+
+    // Multiple admins via comma-separated lists
+    const emailsCsv = process.env.ADMIN_EMAILS;
+    const passwordsCsv = process.env.ADMIN_PASSWORDS;
+    const namesCsv = process.env.ADMIN_NAMES;
+
+    if (emailsCsv && passwordsCsv) {
+        const emailList = emailsCsv.split(",").map(s => s.trim()).filter(Boolean);
+        const passwordList = passwordsCsv.split(",").map(s => s.trim());
+        const nameList = (namesCsv ? namesCsv.split(",").map(s => s.trim()) : []);
+
+        if (emailList.length !== passwordList.length) {
+            console.warn("[admincontrole] ADMIN_EMAILS and ADMIN_PASSWORDS count mismatch; skipping env admin list.");
+        } else {
+            for (let i = 0; i < emailList.length; i++) {
+                envAccounts.push({
+                    email: emailList[i],
+                    password: passwordList[i],
+                    name: nameList[i] || "Admin"
+                });
+            }
+        }
+    }
+
+    // Single admin fallback
+    if (envAccounts.length === 0 && process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD) {
+        envAccounts.push({
+            email: process.env.ADMIN_EMAIL,
+            password: process.env.ADMIN_PASSWORD,
+            name: process.env.ADMIN_NAME || "Admin"
+        });
+    }
+
+    return envAccounts;
+};
+
+// Keep ONLY two dummy accounts as fallback
+const DUMMY_ADMIN_ACCOUNTS = [
     {
         email: "admin@vedified.com",
         password: "admin123",
         name: "Super Admin"
     },
     {
-        email: "editor@vedified.com", 
+        email: "editor@vedified.com",
         password: "editor123",
         name: "Content Editor"
-    },
-    {
-        email: "manager@vedified.com",
-        password: "manager123", 
-        name: "Blog Manager"
-    },
-    {
-        email: "test@vedified.com",
-        password: "test123",
-        name: "Test Account"
-    },
-    {
-        email: "demo@vedified.com",
-        password: "demo123",
-        name: "Demo User"
     }
-    ,
-    {
-        email: "arshji769@gmail.com",
-        password: "Arsh@1432",
-        name: "Demo User"
-    }
+];
 
+// Final admin accounts list (env-defined take precedence before dummies)
+const ADMIN_ACCOUNTS = [
+    ...loadEnvAdminAccounts(),
+    ...DUMMY_ADMIN_ACCOUNTS
 ];
 
 // Function to check if credentials match any admin account
