@@ -98,7 +98,7 @@ const Layout = () => {
       {/* Content from child routes */}
       <div className='flex h-[calc(100vh-80px)] sm:h-[calc(100vh-90px)]'>
         <Sidebar />
-        <div className='flex-1 overflow-hidden'>
+        <div className='flex-1 overflow-y-auto'>
           <Outlet />
         </div>
       </div>

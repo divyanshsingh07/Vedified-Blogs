@@ -198,7 +198,7 @@ const AddBlog = () => {
   )
 
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
+    <div className="w-full space-y-6 p-4 sm:p-6 lg:p-8 min-h-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Add New Blog</h1>
