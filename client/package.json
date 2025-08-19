@@ -8,8 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "cross-env ROLLUP_DISABLE_NATIVE=1 ROLLUP_USE_NODE_JS_IMPLEMENTATION=true vite build",
-    "lint": "eslint .",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
