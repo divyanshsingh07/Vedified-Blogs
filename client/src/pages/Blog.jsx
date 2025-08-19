@@ -252,7 +252,7 @@ const Blog = () => {
                     <button 
                       type="submit"
                       disabled={submittingComment || commentSubmitted}
-                      className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-medium"
+                      className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-primary text-white rounded-lg hover:bg-hover-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-medium"
                     >
                       {submittingComment ? 'Posting...' : commentSubmitted ? 'Comment Submitted!' : 'Post Comment'}
                     </button>
@@ -282,7 +282,7 @@ const Blog = () => {
                       <div className="flex items-center justify-end mt-3">
                         <button 
                           onClick={() => handleDeleteComment(comment._id)}
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 sm:p-1 rounded transition-colors duration-200"
+                          className="text-red-500 hover:text-hover-primary hover:bg-hover-primary/10 p-1.5 sm:p-1 rounded transition-colors duration-200"
                           title="Delete comment"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,7 +301,7 @@ const Blog = () => {
           <div className="mt-6 sm:mt-8 px-2 sm:px-0">
             <button 
               onClick={() => window.history.back()}
-              className="inline-flex items-center px-3 sm:px-4 py-2 sm:py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm sm:text-base font-medium"
+              className="inline-flex items-center px-3 sm:px-4 py-2 sm:py-2.5 bg-primary text-white rounded-lg hover:bg-hover-primary transition-colors text-sm sm:text-base font-medium"
             >
               ← Back to Blogs
             </button>

@@ -27,7 +27,7 @@ function BlogList() {
             <button
               onClick={() => setMenu(item)}
               className={`cursor-pointer px-3 sm:px-4 lg:px-5 py-2 sm:py-2.5 lg:py-3 text-sm sm:text-base lg:text-lg rounded-full z-10 transition-all duration-200 font-medium whitespace-nowrap ${
-                menu === item ? "text-white" : "text-gray-800 hover:text-gray-600"
+                menu === item ? "text-white" : "text-gray-800 hover:text-hover-primary"
               }`}
             >
               {item}

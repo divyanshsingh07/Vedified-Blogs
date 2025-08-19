@@ -189,7 +189,7 @@ const AddBlog = () => {
       className={`p-2 rounded-md transition-colors ${
         isActive 
           ? 'bg-blue-100 text-blue-700' 
-          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          : 'text-gray-600 hover:text-hover-primary hover:bg-hover-primary/20'
       } ${className}`}
       title={title}
     >
@@ -202,7 +202,7 @@ const AddBlog = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Add New Blog</h1>
-        <button className="mt-4 sm:mt-0 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+        <button className="mt-4 sm:mt-0 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-hover-primary transition-colors text-sm sm:text-base">
           Save Draft
         </button>
       </div>
@@ -284,7 +284,7 @@ const AddBlog = () => {
                       <button
                         type="button"
                         onClick={() => setFormData({...formData, image: null})}
-                        className="text-red-500 hover:text-red-700 text-sm"
+                        className="text-red-500 hover:text-hover-primary text-sm"
                       >
                         Remove
                       </button>
@@ -294,7 +294,7 @@ const AddBlog = () => {
                   <>
                     <img src={assets.upload_area} alt="upload" className="mx-auto h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-400 mb-2 sm:mb-3" />
                     <div className="text-xs sm:text-sm text-gray-600">
-                      <label htmlFor="image-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                      <label htmlFor="image-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-hover-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
                         <span>Upload a file</span>
                         <input
                           id="image-upload"
@@ -589,7 +589,7 @@ const AddBlog = () => {
                   type="button"
                   onClick={handleAIGenerate}
                   disabled={aiGenerating}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 rounded-lg hover:from-hover-primary hover:to-hover-primary transition-all duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                   title="Generate AI-powered blog content"
                 >
                   {aiGenerating ? (
@@ -610,7 +610,7 @@ const AddBlog = () => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-blue-600 text-white py-3 px-4 sm:px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-blue-600 text-white py-3 px-4 sm:px-6 rounded-md hover:bg-hover-primary focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center gap-2">
@@ -625,7 +625,7 @@ const AddBlog = () => {
               type="button"
               onClick={() => navigate('/admin/blog-list')}
               disabled={loading}
-              className="flex-1 sm:flex-none bg-gray-200 text-gray-700 py-3 px-4 sm:px-6 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 sm:flex-none bg-gray-200 text-gray-700 py-3 px-4 sm:px-6 rounded-md hover:bg-hover-primary/20 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>

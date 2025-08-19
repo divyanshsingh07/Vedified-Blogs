@@ -20,7 +20,7 @@ const Footer = () => {
             <ul className='space-y-2'>
               {section.links.map((link,i)=>
               <li key={i} className='group/link'>
-                <a href="#" className='text-slate-500 hover:text-indigo-600 transition-all duration-300 font-medium tracking-wide relative inline-block group-hover/link:translate-x-1'>
+                <a href="#" className='text-slate-500 hover:text-hover-primary transition-all duration-300 font-medium tracking-wide relative inline-block group-hover/link:translate-x-1'>
                   {link}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover/link:w-full transition-all duration-300"></span>
                 </a>

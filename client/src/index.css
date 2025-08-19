@@ -10,8 +10,11 @@
 ::-webkit-scrollbar {
   display: none;
 }
-@theme{
-  --color-primary : #5044E5;
+@theme {
+  --color-primary: #14B8A6;   /* Teal – fresh & modern */
+  --color-navy-700: #334155;  /* Slate blue-grey for balance */
+  --color-navy-800: #1E293B;  /* Deep navy for contrast */
+  --color-navy-900: #0F172A;  /* Almost black for strong text */
 }
 
 .rich-text { font-size: 15px;  }

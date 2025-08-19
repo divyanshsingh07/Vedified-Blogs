@@ -132,7 +132,7 @@ const Dashboard = () => {
         <button
           onClick={fetchDashboardData}
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-hover-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
         >
           {loading ? (
             <>
@@ -154,11 +154,11 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Total Blogs Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-blue-300 transition-all duration-200 group"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group"
           onClick={navigateToBlogs}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+            <div className="p-2 sm:p-3 bg-blue-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
               <img src={assets.tick_icon} alt="blogs" className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="ml-3 sm:ml-4">
@@ -169,8 +169,8 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{dashboardData.blogCount}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-blue-500 transition-colors">Blogs</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.blogCount}</p>
+                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Blogs</p>
                 </>
               )}
             </div>
@@ -184,11 +184,11 @@ const Dashboard = () => {
 
         {/* Total Comments Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-green-300 transition-all duration-200 group"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group"
           onClick={navigateToComments}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+            <div className="p-2 sm:p-3 bg-green-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
               <img src={assets.comment_icon} alt="comments" className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="ml-3 sm:ml-4">
@@ -199,8 +199,8 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">{dashboardData.commentCount}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-green-500 transition-colors">Comments</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.commentCount}</p>
+                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Comments</p>
                 </>
               )}
             </div>
@@ -214,11 +214,11 @@ const Dashboard = () => {
 
         {/* Total Drafts Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-yellow-300 transition-all duration-200 group sm:col-span-2 lg:col-span-1"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group sm:col-span-2 lg:col-span-1"
           onClick={navigateToDrafts}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg group-hover:bg-yellow-200 transition-colors">
+            <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
               <img src={assets.add_icon} alt="drafts" className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="ml-3 sm:ml-4">
@@ -229,8 +229,8 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-yellow-600 transition-colors">{dashboardData.draftBlogs}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-yellow-500 transition-colors">Drafts</p>
+                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.draftBlogs}</p>
+                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Drafts</p>
                 </>
               )}
             </div>
@@ -298,13 +298,13 @@ const Dashboard = () => {
                 
                 <div className="flex gap-2">
                   <button 
-                    className="flex-1 text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-xs font-medium transition-colors"
+                    className="flex-1 text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors"
                     onClick={() => handleToggleStatus(blog._id)}
                   >
                     {blog.isPublished ? 'Unpublish' : 'Publish'}
                   </button>
                   <button 
-                    className="text-gray-600 hover:text-red-600 bg-gray-100 hover:bg-red-100 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+                    className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
                     onClick={() => handleDelete(blog._id)}
                   >
                     <img src={assets.bin_icon} alt="delete" className="w-4 h-5" />
@@ -338,7 +338,7 @@ const Dashboard = () => {
                 </tr>
               ) : (
                 dashboardData.recentBlogs.map((blog, index) => (
-                  <tr key={blog._id} className="hover:bg-gray-50">
+                  <tr key={blog._id} className="hover:bg-hover-primary/10">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       <div className="max-w-[300px]">
@@ -359,13 +359,13 @@ const Dashboard = () => {
                     </td>
                     <td className=" cursor-pointer px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <button 
-                        className="text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-md text-xs transition-colors"
+                        className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors"
                         onClick={() => handleToggleStatus(blog._id)}
                       >
                         {blog.isPublished ? 'Unpublish' : 'Publish'}
                       </button>
                       <button 
-                        className="text-gray-600 hover:text-red-600 bg-gray-100 hover:bg-red-100 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                        className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                         onClick={() => handleDelete(blog._id)}
                       >
                         <img src={assets.bin_icon} alt="delete" className="w-4 h-5 cursor-pointer" />

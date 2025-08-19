@@ -67,7 +67,7 @@ const Sidebar = () => {
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
             }`
           }
         >
@@ -108,7 +108,7 @@ const Sidebar = () => {
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
             }`
           }
         >
@@ -135,7 +135,7 @@ const Sidebar = () => {
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
             }`
           }
         >
@@ -162,7 +162,7 @@ const Sidebar = () => {
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
                 ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
             }`
           }
         >

@@ -67,7 +67,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-hover-primary"
               >
                 {showPassword ? '👁️' : '👁️‍🗨️'}
               </button>
@@ -77,7 +77,7 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-hover-primary focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Login
           </button>

@@ -48,7 +48,7 @@ const BlogCard = ({ blog }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
                 {/* Category Badge */}
-                <span className='absolute top-4 left-4 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold rounded-full shadow-lg backdrop-blur-md border border-white/20 group-hover:from-indigo-500 group-hover:to-purple-500 transition-all duration-300'>
+                <span className='absolute top-4 left-4 px-4 py-2 bg-gradient-to-r from-primary to-hover-primary text-white text-sm font-semibold rounded-full shadow-lg backdrop-blur-md border border-white/20 group-hover:from-primary group-hover:to-hover-primary transition-all duration-300'>
                     {category}
                 </span>
                 
@@ -71,14 +71,14 @@ const BlogCard = ({ blog }) => {
                     {title}
                 </h5>
                 <p 
-                    className='text-sm sm:text-base text-slate-600 leading-relaxed font-medium tracking-wide group-hover:text-slate-700 transition-colors duration-300'
+                    className='text-sm sm:text-base text-slate-600 leading-relaxed font-medium tracking-wide group-hover:text-hover-primary transition-colors duration-300'
                     style={cardStyles.description}
                 >
                     {previewText}...
                 </p>
                 
                 {/* Bottom accent line */}
-                <div className="mt-6 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="mt-6 h-1 bg-gradient-to-r from-primary via-hover-primary to-primary rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
             </div>
         </div>
     )

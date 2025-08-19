@@ -43,7 +43,7 @@ const AdminAccounts = () => {
         <h2 className="text-xl font-bold text-gray-900">Admin Accounts</h2>
         <button
           onClick={fetchAdminAccounts}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-hover-primary transition-colors text-sm"
         >
           Refresh
         </button>
@@ -66,7 +66,7 @@ const AdminAccounts = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {adminAccounts.map((admin, index) => (
-              <tr key={index} className="hover:bg-gray-50">
+              <tr key={index} className="hover:bg-hover-primary/10">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                   {admin.name}
                 </td>

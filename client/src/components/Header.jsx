@@ -24,7 +24,7 @@ function Header() {
                     <p>Write Your BLOG with help of AI</p>
                     <img src={assets.star_icon} alt="star" className="w-2.5 h-2.5" />
                 </div>
-                <p className='text-7xl py-8'>Your own <span className='text-7xl text-blue-500'>blogging <br /> </span>
+                <p className='text-7xl py-8'>Your own <span className='text-7xl text-primary'>blogging <br /> </span>
                     platform.</p>
 
             </div>
@@ -39,7 +39,7 @@ function Header() {
                 />
                 <button
                     type="submit"
-                    className='bg-primary text-white px-6 py-2 m-1.5 rounded hover:scale-105 transition-all cursor-pointer'
+                    className='bg-primary text-white px-6 py-2 m-1.5 rounded hover:scale-105 hover:bg-hover-primary transition-all cursor-pointer'
                 >
                     Search
                 </button>

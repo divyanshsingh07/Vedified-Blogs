@@ -118,7 +118,7 @@ const Comments = () => {
           <button
             onClick={fetchComments}
             disabled={loading}
-            className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm"
+            className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-hover-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm"
           >
             {loading ? (
               <>
@@ -210,7 +210,7 @@ const Comments = () => {
                   {!comment.isApproved && (
                     <button 
                       onClick={() => handleApprove(comment._id)}
-                      className="flex-1 text-green-600 hover:text-green-800 bg-green-100 hover:bg-green-200 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                                                  className="flex-1 text-green-600 hover:text-hover-primary bg-green-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
                     >
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -220,7 +220,7 @@ const Comments = () => {
                   )}
                   <button 
                     onClick={() => handleDelete(comment._id)}
-                    className="flex-1 text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                                                className="flex-1 text-red-600 hover:text-hover-primary bg-red-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -264,7 +264,7 @@ const Comments = () => {
                 </tr>
               ) : (
                 filteredComments.map((comment, index) => (
-                  <tr key={comment._id} className="hover:bg-gray-50">
+                  <tr key={comment._id} className="hover:bg-hover-primary/10">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
                     <td className="px-6 py-4">
                       <div className="max-w-[300px]">
@@ -317,7 +317,7 @@ const Comments = () => {
                         {!comment.isApproved && (
                           <button 
                             onClick={() => handleApprove(comment._id)}
-                            className="text-green-600 hover:text-green-800 bg-green-100 hover:bg-green-200 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
+                            className="text-green-600 hover:text-hover-primary bg-green-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
                           >
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -327,7 +327,7 @@ const Comments = () => {
                         )}
                         <button 
                           onClick={() => handleDelete(comment._id)}
-                          className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
+                                                      className="text-red-600 hover:text-hover-primary bg-red-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
                         >
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

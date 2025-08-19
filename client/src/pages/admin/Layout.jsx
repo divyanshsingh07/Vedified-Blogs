@@ -88,7 +88,7 @@ const Layout = () => {
         </div>
         <button 
           onClick={handleLogout} 
-          className='flex items-center gap-2 rounded-full hover:scale-105 transition-all cursor-pointer text-xs sm:text-sm bg-primary text-white px-4 sm:px-6 py-2 sm:py-2.5 font-medium'
+          className='flex items-center gap-2 rounded-full hover:scale-105 hover:bg-hover-primary transition-all cursor-pointer text-xs sm:text-sm bg-primary text-white px-4 sm:px-6 py-2 sm:py-2.5 font-medium'
         >
           Logout
           <img src={assets.arrow} alt="logout" className='w-3 h-3' />
