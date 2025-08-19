@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -8,9 +8,16 @@ import Image from '@tiptap/extension-image'
 import Color from '@tiptap/extension-color'
 import FontFamily from '@tiptap/extension-font-family'
 import HorizontalRule from '@tiptap/extension-horizontal-rule'
+import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../../contexts/AppContext'
+import toast from 'react-hot-toast'
 import { assets } from '../../assets/assets'
 
 const AddBlog = () => {
+  const navigate = useNavigate()
+  const { axios } = useAppContext()
+  const [loading, setLoading] = useState(false)
+  const [aiGenerating, setAiGenerating] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     subTitle: '',
@@ -18,6 +25,16 @@ const AddBlog = () => {
     description: '',
     image: null
   })
+
+  // Add smooth scroll behavior for the entire page
+  useEffect(() => {
+    // Add smooth scroll behavior to the entire page
+    document.documentElement.style.scrollBehavior = 'smooth'
+    
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto'
+    }
+  }, [])
 
   // Rich text editor setup
   const editor = useEditor({
@@ -41,13 +58,62 @@ const AddBlog = () => {
         ...formData,
         description: editor.getHTML()
       })
-    },
+    }
   })
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    // Add your blog creation logic here
+    
+    if (!formData.title || !formData.category || !formData.description || !formData.image) {
+      toast.error('Please fill in all required fields')
+      return
+    }
+
+    try {
+      setLoading(true)
+      
+      // Create FormData for file upload
+      const submitData = new FormData()
+      submitData.append('Blog', JSON.stringify({
+        title: formData.title,
+        subtitle: formData.subTitle,
+        description: formData.description,
+        category: formData.category,
+        isPublished: true
+      }))
+      submitData.append('image', formData.image)
+
+      // Submit to backend
+      const { data } = await axios.post('/api/blog/add', submitData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      if (data.success) {
+        toast.success('Blog created successfully!')
+        // Reset form
+        setFormData({
+          title: '',
+          subTitle: '',
+          category: '',
+          description: '',
+          image: null
+        })
+        if (editor) {
+          editor.commands.setContent('')
+        }
+        // Navigate to blog list
+        navigate('/admin/blog-list')
+      } else {
+        toast.error(data.message || 'Failed to create blog')
+      }
+    } catch (error) {
+      console.error('Blog creation error:', error)
+      toast.error(error.response?.data?.message || 'Failed to create blog. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleInputChange = (e) => {
@@ -68,26 +134,51 @@ const AddBlog = () => {
   }
 
   // AI content generation function
-  const handleAIGenerate = () => {
-    // This is a placeholder for AI content generation
-    // You can integrate with OpenAI, Claude, or other AI services here
-    const aiGeneratedContent = `
-      <h2>AI Generated Blog Content</h2>
-      <p>This is a sample AI-generated blog post about <strong>${formData.category || 'technology'}</strong>.</p>
-      <ul>
-        <li>Key point 1: Innovation drives progress</li>
-        <li>Key point 2: Collaboration enhances creativity</li>
-        <li>Key point 3: Continuous learning is essential</li>
-      </ul>
-      <p>In today's rapidly evolving world, staying ahead requires embracing new technologies and methodologies.</p>
-    `
+  const handleAIGenerate = async () => {
+    if (!formData.title) {
+      toast.error('Please enter a title first')
+      return
+    }
     
-    if (editor) {
-      editor.commands.setContent(aiGeneratedContent)
-      setFormData({
-        ...formData,
-        description: aiGeneratedContent
+    if (!formData.category) {
+      toast.error('Please select a category first')
+      return
+    }
+
+    try {
+      setAiGenerating(true)
+      console.log('Starting AI generation with:', { title: formData.title, category: formData.category, subtitle: formData.subTitle })
+      
+      // Call backend AI endpoint
+      const { data } = await axios.post('/api/blog/generateContent', {
+        title: formData.title,
+        category: formData.category,
+        subtitle: formData.subTitle
       })
+
+      console.log('AI generation response:', data)
+
+      if (data.success) {
+        // Set the generated content in the editor
+        if (editor) {
+          console.log('Setting editor content:', data.data.content)
+          editor.commands.setContent(data.data.content)
+          setFormData({
+            ...formData,
+            description: data.data.content
+          })
+        }
+        toast.success('AI content generated successfully!')
+      } else {
+        console.error('AI generation failed:', data.message)
+        toast.error(data.message || 'Failed to generate AI content')
+      }
+    } catch (error) {
+      console.error('AI generation error:', error)
+      console.error('Error response:', error.response?.data)
+      toast.error(error.response?.data?.message || 'Failed to generate AI content. Please try again.')
+    } finally {
+      setAiGenerating(false)
     }
   }
 
@@ -107,7 +198,7 @@ const AddBlog = () => {
   )
 
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Add New Blog</h1>
@@ -181,47 +272,66 @@ const AddBlog = () => {
                 Blog Image *
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 text-center">
-                <img src={assets.upload_area} alt="upload" className="mx-auto h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-400 mb-2 sm:mb-3" />
-                <div className="text-xs sm:text-sm text-gray-600">
-                  <label htmlFor="image-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
-                    <span>Upload a file</span>
-                    <input
-                      id="image-upload"
-                      name="image"
-                      type="file"
-                      className="sr-only"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      required
+                {formData.image ? (
+                  <div className="space-y-3">
+                    <img 
+                      src={URL.createObjectURL(formData.image)} 
+                      alt="Preview" 
+                      className="mx-auto h-32 w-auto rounded-lg object-cover"
                     />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-sm text-gray-600">{formData.image.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setFormData({...formData, image: null})}
+                        className="text-red-500 hover:text-red-700 text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <img src={assets.upload_area} alt="upload" className="mx-auto h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-gray-400 mb-2 sm:mb-3" />
+                    <div className="text-xs sm:text-sm text-gray-600">
+                      <label htmlFor="image-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                        <span>Upload a file</span>
+                        <input
+                          id="image-upload"
+                          name="image"
+                          type="file"
+                          className="sr-only"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          required
+                        />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                  </>
+                )}
               </div>
             </div>
           </div>
 
-          {/* AI Content Generation Button */}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={handleAIGenerate}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-sm font-medium"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-              Generate with AI
-            </button>
-            <span className="text-xs text-gray-500">Click to generate AI-powered blog content</span>
-          </div>
-
+          {/* AI Content Generation Button - Moved to content box */}
           {/* Rich Text Editor */}
-          <div>
+    <div>
             <label className="block text-sm font-medium text-gray-700 mb-1 sm:mb-2">
               Blog Content *
             </label>
+            
+            {/* AI Generation Status */}
+            {aiGenerating && (
+              <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center gap-2 text-blue-700">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                  <span className="text-sm font-medium">AI is generating your blog content...</span>
+                </div>
+                <p className="text-xs text-blue-600 mt-1">This may take a few moments. Please wait.</p>
+              </div>
+            )}
             
             {/* Toolbar */}
             <div className="border border-gray-300 rounded-t-md bg-gray-50 p-3 flex flex-wrap items-center gap-2">
@@ -467,11 +577,31 @@ const AddBlog = () => {
             </div>
             
             {/* Editor Content */}
-            <div className="border border-t-0 border-gray-300 rounded-b-md">
+            <div className="border border-t-0 border-gray-300 rounded-b-md relative">
               <EditorContent 
                 editor={editor} 
-                className="prose max-w-none p-4 min-h-[300px] focus:outline-none"
+                className="prose max-w-none p-4 min-h-[300px]"
               />
+              
+              {/* AI Generation Button - Bottom Right Corner */}
+              <div className="absolute bottom-4 right-4">
+                <button
+                  type="button"
+                  onClick={handleAIGenerate}
+                  disabled={aiGenerating}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-3 py-2 rounded-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-200 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                  title="Generate AI-powered blog content"
+                >
+                  {aiGenerating ? (
+                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+                  ) : (
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  )}
+                  {aiGenerating ? 'Generating...' : 'AI'}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -479,13 +609,23 @@ const AddBlog = () => {
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 pt-4 sm:pt-6">
             <button
               type="submit"
-              className="flex-1 bg-blue-600 text-white py-3 px-4 sm:px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium"
+              disabled={loading}
+              className="flex-1 bg-blue-600 text-white py-3 px-4 sm:px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Publish Blog
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  Creating Blog...
+                </div>
+              ) : (
+                'Publish Blog'
+              )}
             </button>
             <button
               type="button"
-              className="flex-1 sm:flex-none bg-gray-200 text-gray-700 py-3 px-4 sm:px-6 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium"
+              onClick={() => navigate('/admin/blog-list')}
+              disabled={loading}
+              className="flex-1 sm:flex-none bg-gray-200 text-gray-700 py-3 px-4 sm:px-6 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors text-sm sm:text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Cancel
             </button>

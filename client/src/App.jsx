@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Home from './pages/Home'
 import Blog from './pages/Blog'
 import { Routes, Route } from 'react-router-dom'
+import { AppProvider, useAppContext } from './contexts/AppContext'
 
 import Layout from './pages/admin/Layout'
 import Dashboard from './pages/admin/Dashboard'
@@ -9,25 +10,52 @@ import AddBlog from './pages/admin/AddBlog'
 import BlogList from './pages/admin/BlogList'
 import Comments from './pages/admin/Comments'
 import Login from './components/admin/Login'
+import {Toaster} from 'react-hot-toast'
 
-const App = () => {
+const AppRoutes = () => {
+  const { token } = useAppContext();
+  
   return (
     <div>
+      <Toaster />
       <Routes>
         <Route index element={<Home />} />
         <Route path='blog' element={<Blog />} />
         <Route path='blog/:id' element={<Blog />} />
-        <Route path='admin' element={true ? <Layout />:<Login/>}>
-          <Route index element={<Dashboard />} />
-          <Route path='add-blog' element={<AddBlog />} />
-          <Route path='blog-list' element={<BlogList />} />
-          <Route path='comments' element={<Comments />} />
+        <Route 
+          path='admin' 
+          element={
+            token ? (
+              <Layout />
+            ) : (
+              <Login />
+            )
+          }
+        >
+          <Route index element={token ? <Dashboard /> : <Login />} />
+          <Route path='add-blog' element={token ? <AddBlog /> : <Login />} />
+          <Route path='blog-list' element={token ? <BlogList /> : <Login />} />
+          <Route path='comments' element={token ? <Comments /> : <Login />} />
         </Route>
-
-
-    </Routes>
-
+      </Routes>
     </div>
+  )
+}
+
+const App = () => {
+  // Add smooth scroll behavior globally
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+    
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, []);
+
+  return (
+    <AppProvider>
+      <AppRoutes />
+    </AppProvider>
   )
 }
 

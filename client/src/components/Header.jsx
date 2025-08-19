@@ -1,7 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { assets } from '../assets/assets'
+import { useAppContext } from '../contexts/AppContext'
 
 function Header() {
+    const { setInput } = useAppContext();
+    const [searchValue, setSearchValue] = useState('');
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setInput(searchValue);
+    };
+
+    const handleInputChange = (e) => {
+        setSearchValue(e.target.value);
+        // Update context input in real-time as user types
+        setInput(e.target.value);
+    };
+
     return (
         <div className='mx-8 sm:mx-16 xl:mx-32 relative'>
             <div className='text-center mt-20 mb-8'>
@@ -13,10 +28,12 @@ function Header() {
                     platform.</p>
 
             </div>
-            <form className='flex items-center max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-white rounded overflow-hidden'>
+            <form onSubmit={handleSearch} className='flex items-center max-w-lg max-sm:scale-75 mx-auto border border-gray-300 bg-white rounded overflow-hidden'>
                 <input
                     type="text"
                     placeholder="Search for blogs"
+                    value={searchValue}
+                    onChange={handleInputChange}
                     required
                     className='flex-1 pl-4 py-2 outline-none'
                 />

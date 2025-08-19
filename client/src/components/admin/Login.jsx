@@ -1,19 +1,31 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAppContext } from '../../contexts/AppContext'
+import toast from 'react-hot-toast'
 
-const Login = ({ setIsAuthenticated }) => {
+const Login = () => {
+  const { axios, setToken } = useAppContext();
+
   const [credentials, setCredentials] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault()
-    // Simple authentication check
-    if (credentials.email === 'admin@admin.com' && credentials.password === 'admin') {
-      setIsAuthenticated && setIsAuthenticated(true)
-      navigate('/admin')
-    } else {
-      alert('Invalid credentials!')
+    try{
+      const{data}=await axios.post("/api/admin/login",credentials);
+      if(data.success){
+        setToken(data.token);
+        localStorage.setItem("token",data.token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        navigate("/admin");
+      }
+      else{
+        toast.error(data.message);
+      }
+    }
+    catch(error){
+      toast.error(error.message);
     }
   }
 
