@@ -37,11 +37,16 @@ app.get('/health', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`🌐 URL: http://localhost:${PORT}`);
-  console.log(`🔗 Health Check: http://localhost:${PORT}/health`);
-});
+// In serverless environments like Vercel, we should NOT call app.listen().
+// Vercel will handle the HTTP server and invoke the exported app as a handler.
+// Only start a local server when running locally (e.g., npm run dev).
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`🌐 URL: http://localhost:${PORT}`);
+    console.log(`🔗 Health Check: http://localhost:${PORT}/health`);
+  });
+}
 
 export default app;
