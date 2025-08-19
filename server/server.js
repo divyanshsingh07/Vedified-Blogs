@@ -37,6 +37,21 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Environment check endpoint (for debugging)
+app.get('/env-check', (req, res) => {
+  res.json({
+    nodeEnv: process.env.NODE_ENV,
+    isVercel: !!process.env.VERCEL,
+    hasMongoUri: !!process.env.MONGODB_URI,
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    hasImagekitPublic: !!process.env.IMAGEKIT_PUBLIC_KEY,
+    hasImagekitPrivate: !!process.env.IMAGEKIT_PRIVATE_KEY,
+    hasImagekitUrl: !!process.env.IMAGEKIT_URL_ENDPOINT,
+    hasGeminiKey: !!process.env.GEMINI_API_KEY,
+    vercelEnv: process.env.VERCEL_ENV || 'none'
+  });
+});
+
 // In serverless environments like Vercel, we should NOT call app.listen().
 // Vercel will handle the HTTP server and invoke the exported app as a handler.
 // Only start a local server when running locally (e.g., npm run dev).

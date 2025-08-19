@@ -72,8 +72,9 @@ export const createBlog = async (req, res) => {
         });
         
         try {
-            const fileBuffer = fs.readFileSync(imgFile.path);
-            console.log('File read successfully, size:', fileBuffer.length);
+            // Use file buffer directly from memory storage (for serverless)
+            const fileBuffer = imgFile.buffer;
+            console.log('File buffer available, size:', fileBuffer.length);
             
             const response = await imagekit.upload({
                 file: fileBuffer,
@@ -154,8 +155,7 @@ export const createBlog = async (req, res) => {
             const savedBlog = await Blog.create(blogData);
             console.log('Blog saved successfully:', savedBlog);
             
-            // Clean up uploaded file
-            fs.unlinkSync(imgFile.path);
+            // No need to clean up file in memory storage (serverless)
             
             res.json({success: true, message: "Blog created successfully", blog: savedBlog});
             
@@ -167,10 +167,7 @@ export const createBlog = async (req, res) => {
                 name: imagekitError.name
             });
             
-            // Clean up uploaded file on error
-            if (imgFile.path) {
-                fs.unlinkSync(imgFile.path);
-            }
+            // No file cleanup needed in memory storage (serverless)
             
             res.json({
                 success: false, 
@@ -312,8 +309,9 @@ export const updateBlog = async (req, res) => {
         // Handle image update if new image is provided
         if (req.file) {
             try {
-                const fileBuffer = fs.readFileSync(req.file.path);
-                console.log('New image file read successfully, size:', fileBuffer.length);
+                // Use file buffer directly from memory storage (for serverless)
+                const fileBuffer = req.file.buffer;
+                console.log('New image buffer available, size:', fileBuffer.length);
                 
                 const response = await imagekit.upload({
                     file: fileBuffer,
@@ -342,8 +340,7 @@ export const updateBlog = async (req, res) => {
                 
                 existingBlog.image = optimizedImageUrl;
                 
-                // Clean up uploaded file
-                fs.unlinkSync(req.file.path);
+                // No file cleanup needed in memory storage (serverless)
                 
             } catch (imageError) {
                 console.error('Image upload error:', imageError);
