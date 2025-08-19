@@ -109,4 +109,46 @@ router.post('/test-ai', async (req, res) => {
   }
 });
 
+// Debug endpoint for testing blog creation (no auth, no file upload)
+router.post('/debug-create', async (req, res) => {
+  try {
+    console.log('🔍 Debug blog creation test started');
+    console.log('Request body:', req.body);
+    
+    // Test basic blog creation without file upload
+    const testBlog = {
+      title: "Debug Test Blog",
+      subtitle: "Testing blog creation",
+      description: "<p>This is a test blog post to debug the creation process.</p>",
+      category: "Technology",
+      image: "https://via.placeholder.com/800x400.png", // Placeholder image
+      isPublished: false
+    };
+    
+    console.log('Creating test blog:', testBlog);
+    
+    // Import Blog model and create
+    const { default: Blog } = await import('../models/blog.js');
+    const savedBlog = await Blog.create(testBlog);
+    
+    console.log('✅ Test blog created successfully:', savedBlog._id);
+    
+    res.json({
+      success: true,
+      message: "Debug blog creation successful",
+      blogId: savedBlog._id,
+      blog: savedBlog
+    });
+    
+  } catch (error) {
+    console.error('❌ Debug blog creation failed:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+  }
+});
+
 export default router;

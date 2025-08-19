@@ -110,7 +110,31 @@ const AddBlog = () => {
       }
     } catch (error) {
       console.error('Blog creation error:', error)
-      toast.error(error.response?.data?.message || 'Failed to create blog. Please try again.')
+      console.error('Error response:', error.response)
+      console.error('Error data:', error.response?.data)
+      
+      // More detailed error handling
+      let errorMessage = 'Failed to create blog. Please try again.'
+      
+      if (error.response?.data?.message) {
+        errorMessage = error.response.data.message
+      } else if (error.response?.data?.error) {
+        errorMessage = error.response.data.error
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+      
+      // Show additional debugging info in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Full error details:', {
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          headers: error.response?.headers
+        })
+      }
+      
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }

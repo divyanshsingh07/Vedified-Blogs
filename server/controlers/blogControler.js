@@ -21,8 +21,18 @@ export const getBlogs = async (req, res) => {
 
 export const createBlog = async (req, res) => {
     try {
+        console.log('=== CREATE BLOG DEBUG START ===');
+        console.log('Request method:', req.method);
+        console.log('Request headers:', req.headers);
         console.log('Request body:', req.body);
         console.log('Request files:', req.file);
+        console.log('Environment check:', {
+            hasMongoUri: !!process.env.MONGODB_URI,
+            hasImagekitPublic: !!process.env.IMAGEKIT_PUBLIC_KEY,
+            hasImagekitPrivate: !!process.env.IMAGEKIT_PRIVATE_KEY,
+            hasImagekitUrl: !!process.env.IMAGEKIT_URL_ENDPOINT,
+            isVercel: !!process.env.VERCEL
+        });
         
         // Check if Blog field exists
         if (!req.body.Blog) {
@@ -178,8 +188,19 @@ export const createBlog = async (req, res) => {
         }
         
     } catch (error) {
-        console.error('Blog creation error:', error);
-        res.json({success: false, message: error.message});
+        console.error('=== BLOG CREATION ERROR ===');
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        console.error('Error name:', error.name);
+        console.error('Full error object:', error);
+        console.log('=== CREATE BLOG DEBUG END ===');
+        
+        res.status(500).json({
+            success: false, 
+            message: error.message || 'Internal server error',
+            error: process.env.NODE_ENV === 'development' ? error.stack : 'Server error occurred',
+            timestamp: new Date().toISOString()
+        });
     }
 }
 
