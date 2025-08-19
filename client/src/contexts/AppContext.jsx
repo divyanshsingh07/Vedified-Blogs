@@ -3,7 +3,37 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+// Set API base URL - prioritize environment variable, fallback to production URL, then localhost
+const API_URL = import.meta.env.VITE_API_URL || 
+                (import.meta.env.PROD ? "https://vedified-blogs-server.vercel.app" : "http://localhost:4000");
+
+axios.defaults.baseURL = API_URL;
+
+// Add request interceptor for debugging
+axios.interceptors.request.use(
+    (config) => {
+        console.log(`Making API request to: ${config.baseURL}${config.url}`);
+        return config;
+    },
+    (error) => {
+        console.error('Request interceptor error:', error);
+        return Promise.reject(error);
+    }
+);
+
+// Add response interceptor for better error handling
+axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        console.error('API Error:', error);
+        if (error.code === 'NETWORK_ERROR' || !error.response) {
+            toast.error('Network Error: Unable to connect to server. Please check your connection.');
+        } else if (error.response?.status >= 500) {
+            toast.error('Server Error: Please try again later.');
+        }
+        return Promise.reject(error);
+    }
+);
 
 const AppContext = createContext();
 
