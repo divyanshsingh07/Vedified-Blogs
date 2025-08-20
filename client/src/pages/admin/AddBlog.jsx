@@ -116,6 +116,11 @@ const AddBlog = () => {
       // More detailed error handling
       let errorMessage = 'Failed to create blog. Please try again.'
       
+      // Handle server-side multer file size error
+      if (error.response?.status === 413 || /maximum allowed size/i.test(error.response?.data?.message || '')) {
+        errorMessage = 'Image is too large. Maximum allowed size is 4.5 MB.'
+      }
+
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message
       } else if (error.response?.data?.error) {
@@ -150,6 +155,13 @@ const AddBlog = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
+      // 4.5 MB client-side validation
+      const maxBytes = 4.5 * 1024 * 1024
+      if (file.size > maxBytes) {
+        toast.error('Image is too large. Max size is 4.5 MB')
+        e.target.value = ''
+        return
+      }
       setFormData({
         ...formData,
         image: file
