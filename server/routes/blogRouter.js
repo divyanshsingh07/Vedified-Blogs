@@ -51,8 +51,7 @@ const authenticateToken = (req, res, next) => {
 const upload = multer({ 
     storage: multer.memoryStorage(), // Use memory storage for serverless
     limits: {
-        // 4.5 MB hard limit
-        fileSize: 4.5 * 1024 * 1024
+        fileSize: 5 * 1024 * 1024 // 5MB limit
     },
     fileFilter: (req, file, cb) => {
         // Accept only images
@@ -153,21 +152,3 @@ router.post('/debug-create', async (req, res) => {
 });
 
 export default router;
-
-// Multer error handler (must be after routes on this router)
-// This ensures clear error responses for size and file validation issues
-router.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(413).json({
-        success: false,
-        message: 'Image is too large. Maximum allowed size is 4.5 MB.'
-      });
-    }
-    return res.status(400).json({ success: false, message: err.message });
-  }
-  if (err && err.message === 'Only image files are allowed') {
-    return res.status(400).json({ success: false, message: err.message });
-  }
-  next(err);
-});

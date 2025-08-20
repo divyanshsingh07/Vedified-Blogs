@@ -59,18 +59,28 @@ export const createBlog = async (req, res) => {
         const {title, subtitle, description, category, isPublished = false} = blogData;
         const imgFile = req.file;
 
-       if(!title || !subtitle || !description || !category || !imgFile){
-            return res.json({
-                success: false, 
-                message: "All fields are required",
-                missingFields: {
-                    title: !title,
-                    subtitle: !subtitle,
-                    description: !description,
-                    category: !category,
-                    image: !imgFile
-                }
-            });
+        // Validate fields based on draft/publish mode
+        if (isPublished) {
+            if (!title || !subtitle || !description || !category || !imgFile) {
+                return res.json({
+                    success: false,
+                    message: "All fields are required to publish",
+                    missingFields: {
+                        title: !title,
+                        subtitle: !subtitle,
+                        description: !description,
+                        category: !category,
+                        image: !imgFile
+                    }
+                });
+            }
+        } else {
+            if (!title) {
+                return res.json({
+                    success: false,
+                    message: "Title is required to save a draft"
+                });
+            }
         }
         
         // Upload image to imagekit
@@ -82,92 +92,83 @@ export const createBlog = async (req, res) => {
         });
         
         try {
-            // Use file buffer directly from memory storage (for serverless)
-            const fileBuffer = imgFile.buffer;
-            console.log('File buffer available, size:', fileBuffer.length);
-            
-            const response = await imagekit.upload({
-                file: fileBuffer,
-                fileName: imgFile.originalname,
-                folder: "/blogs",
-            });
-            
-            console.log('ImageKit upload response:', response);
-            
-            // Get imagekit url - try multiple methods
             let optimizedImageUrl;
-            
-            try {
-                // Use the correct file path from response
-                const filePath = response.filePath || response.file;
-                console.log('Using file path:', filePath);
+
+            // Upload only if an image file was provided
+            if (imgFile) {
+                // Use file buffer directly from memory storage (for serverless)
+                const fileBuffer = imgFile.buffer;
+                console.log('File buffer available, size:', fileBuffer.length);
                 
-                // Method 1: Use imagekit.url() with transformations
-                optimizedImageUrl = imagekit.url({
-                    path: filePath,
-                    transformation: [
-                        {width: 1280},
-                        {quality: "auto"},
-                        {format: "webp"},
-                    ],
+                const response = await imagekit.upload({
+                    file: fileBuffer,
+                    fileName: imgFile.originalname,
+                    folder: "/blogs",
                 });
                 
-                console.log('Method 1 - Generated image URL:', optimizedImageUrl);
+                console.log('ImageKit upload response:', response);
                 
-                // If Method 1 fails, try Method 2: Simple URL
-                if (!optimizedImageUrl || optimizedImageUrl === '') {
+                // Get imagekit url - try multiple methods
+                try {
+                    // Use the correct file path from response
+                    const filePath = response.filePath || response.file;
+                    console.log('Using file path:', filePath);
+                    
+                    // Method 1: Use imagekit.url() with transformations
                     optimizedImageUrl = imagekit.url({
-                        path: filePath
+                        path: filePath,
+                        transformation: [
+                            {width: 1280},
+                            {quality: "auto"},
+                            {format: "webp"},
+                        ],
                     });
-                    console.log('Method 2 - Simple URL:', optimizedImageUrl);
-                }
-                
-                // If both methods fail, use direct URL construction
-                if (!optimizedImageUrl || optimizedImageUrl === '') {
+                    
+                    console.log('Method 1 - Generated image URL:', optimizedImageUrl);
+                    
+                    // If Method 1 fails, try Method 2: Simple URL
+                    if (!optimizedImageUrl || optimizedImageUrl === '') {
+                        optimizedImageUrl = imagekit.url({ path: filePath });
+                        console.log('Method 2 - Simple URL:', optimizedImageUrl);
+                    }
+                    
+                    // If both methods fail, use direct URL construction
+                    if (!optimizedImageUrl || optimizedImageUrl === '') {
+                        optimizedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${filePath}`;
+                        console.log('Method 3 - Direct URL construction:', optimizedImageUrl);
+                    }
+                    
+                } catch (urlError) {
+                    console.error('URL generation error:', urlError);
+                    // Fallback to direct URL construction using filePath
+                    const filePath = response.filePath || response.file;
                     optimizedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${filePath}`;
-                    console.log('Method 3 - Direct URL construction:', optimizedImageUrl);
+                    console.log('Fallback URL:', optimizedImageUrl);
                 }
-                
-            } catch (urlError) {
-                console.error('URL generation error:', urlError);
-                // Fallback to direct URL construction using filePath
-                const filePath = response.filePath || response.file;
-                optimizedImageUrl = `${process.env.IMAGEKIT_URL_ENDPOINT}${filePath}`;
-                console.log('Fallback URL:', optimizedImageUrl);
             }
-            
-            console.log('Final image URL:', optimizedImageUrl);
-            console.log('Response file path:', response.filePath);
-            console.log('Response file:', response.file);
-            
-            // Validate that we have a valid URL
-            if (!optimizedImageUrl || optimizedImageUrl === '') {
-                throw new Error('Failed to generate ImageKit URL. Response file: ' + response.file);
-            }
-            
-            // Create blog with the image URL
-            const blogData = {
-                title, 
-                subtitle, 
-                description, 
-                category, 
-                image: optimizedImageUrl, 
+
+            // Build blog payload
+            const blogToSave = {
+                title,
+                subtitle,
+                description,
+                category,
                 isPublished
             };
-            
-            console.log('Blog data to save:', blogData);
-            
-            // Validate blog data before saving
-            if (!blogData.image || blogData.image === '') {
-                throw new Error('Image URL is empty. Cannot save blog without image.');
+
+            if (optimizedImageUrl) {
+                blogToSave.image = optimizedImageUrl;
             }
-            
-            const savedBlog = await Blog.create(blogData);
+
+            // If publish requested but no image URL could be created
+            if (isPublished && !blogToSave.image) {
+                throw new Error('Image is required to publish the blog');
+            }
+
+            const savedBlog = await Blog.create(blogToSave);
             console.log('Blog saved successfully:', savedBlog);
-            
-            // No need to clean up file in memory storage (serverless)
-            
-            res.json({success: true, message: "Blog created successfully", blog: savedBlog});
+
+            res.json({success: true, message: isPublished ? "Blog created successfully" : "Draft saved successfully", blog: savedBlog});
             
         } catch (imagekitError) {
             console.error('ImageKit error:', imagekitError);

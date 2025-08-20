@@ -116,11 +116,6 @@ const AddBlog = () => {
       // More detailed error handling
       let errorMessage = 'Failed to create blog. Please try again.'
       
-      // Handle server-side multer file size error
-      if (error.response?.status === 413 || /maximum allowed size/i.test(error.response?.data?.message || '')) {
-        errorMessage = 'Image is too large. Maximum allowed size is 4.5 MB.'
-      }
-
       if (error.response?.data?.message) {
         errorMessage = error.response.data.message
       } else if (error.response?.data?.error) {
@@ -155,13 +150,6 @@ const AddBlog = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
-      // 4.5 MB client-side validation
-      const maxBytes = 4.5 * 1024 * 1024
-      if (file.size > maxBytes) {
-        toast.error('Image is too large. Max size is 4.5 MB')
-        e.target.value = ''
-        return
-      }
       setFormData({
         ...formData,
         image: file
@@ -238,7 +226,43 @@ const AddBlog = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Add New Blog</h1>
-        <button className="mt-4 sm:mt-0 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-hover-primary transition-colors text-sm sm:text-base">
+        <button
+          type="button"
+          onClick={async () => {
+            try {
+              if (!formData.title) {
+                toast.error('Title is required to save a draft')
+                return
+              }
+              setLoading(true)
+              const draftData = new FormData()
+              draftData.append('Blog', JSON.stringify({
+                title: formData.title,
+                subtitle: formData.subTitle,
+                description: formData.description,
+                category: formData.category,
+                isPublished: false
+              }))
+              if (formData.image) {
+                draftData.append('image', formData.image)
+              }
+              const { data } = await axios.post('/api/blog/add', draftData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+              })
+              if (data.success) {
+                toast.success('Draft saved!')
+                navigate('/admin/blog-list')
+              } else {
+                toast.error(data.message || 'Failed to save draft')
+              }
+            } catch (err) {
+              toast.error(err.response?.data?.message || 'Failed to save draft')
+            } finally {
+              setLoading(false)
+            }
+          }}
+          className="mt-4 sm:mt-0 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-hover-primary transition-colors text-sm sm:text-base cursor-pointer"
+        >
           Save Draft
         </button>
       </div>

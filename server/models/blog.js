@@ -1,11 +1,16 @@
 import mongoose from "mongoose";
 const blogSchema = new mongoose.Schema({
     title: {type: String, required: true},
-    subtitle: {type: String, required: true},
-    description: {type: String, required: true},
-    category: {type: String, required: true},
-    image: {type: String, required: true},
-   isPublished: {type: Boolean, default: true},
+    subtitle: {type: String, required: false},
+    description: {type: String, required: false},
+    category: {type: String, required: false},
+    image: { 
+        type: String, 
+        required: function () { 
+            return this.isPublished === true; 
+        }
+    },
+   isPublished: {type: Boolean, default: false},
 }, {timestamps: true});
 
 const Blog = mongoose.model("Blog", blogSchema);

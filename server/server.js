@@ -15,8 +15,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to Database
-connectDB();
+// Connect to Database (await to avoid buffering timeouts on first requests)
+await connectDB().catch((err) => {
+  console.error('Failed to connect to MongoDB on startup:', err?.message || err);
+});
 
 // Routes
 app.use("/api/admin", adminRoutes);
