@@ -42,6 +42,19 @@ GEMINI_API_KEY=your_gemini_api_key
 
 # Node Environment
 NODE_ENV=production
+
+# Google OAuth for Admin Login
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+
+# Admin accounts (authorize Google sign-ins by email)
+# Single admin (fallback password login still supported):
+# ADMIN_EMAIL=admin@example.com
+# ADMIN_PASSWORD=somePassword
+# ADMIN_NAME=Admin User
+# Multiple admins (comma-separated):
+# ADMIN_EMAILS=admin@example.com,editor@example.com
+# ADMIN_PASSWORDS=pass1,pass2
+# ADMIN_NAMES=Admin,Editor
 ```
 
 ---
@@ -58,6 +71,11 @@ git push origin main
 ### 2. **Verify Environment Variables**
 - Visit: `https://your-vercel-url.vercel.app/env-check`
 - Should return `true` for all required variables
+
+### 2.1 **Client Environment Variables (Vercel)**
+- In the client project settings, set:
+  - `VITE_API_URL` = `https://your-server.vercel.app`
+  - `VITE_GOOGLE_CLIENT_ID` = same as `GOOGLE_CLIENT_ID`
 
 ### 3. **Test Endpoints**
 - Health check: `https://your-vercel-url.vercel.app/health`
@@ -117,5 +135,6 @@ Try creating a blog through your admin panel.
 2. Verify images appear correctly on your blog
 3. Test AI content generation
 4. Test comment system
+5. Test Google Sign-In on the login page using an authorized email
 
 Your blog should now work perfectly in production! 🎉
