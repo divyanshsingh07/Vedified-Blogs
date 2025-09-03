@@ -50,6 +50,8 @@ app.get('/env-check', (req, res) => {
     hasImagekitPrivate: !!process.env.IMAGEKIT_PRIVATE_KEY,
     hasImagekitUrl: !!process.env.IMAGEKIT_URL_ENDPOINT,
     hasGeminiKey: !!process.env.GEMINI_API_KEY,
+    hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID || !!process.env.GOOGLE_CLIENT_IDS,
+    adminEmailsConfigured: !!process.env.ADMIN_EMAIL || !!process.env.ADMIN_EMAILS,
     vercelEnv: process.env.VERCEL_ENV || 'none'
   });
 });
