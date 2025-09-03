@@ -3,7 +3,8 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "env": {
-    "VITE_API_URL": "https://vedified-blogs-server.vercel.app"
+    "VITE_API_URL": "https://vedified-blogs-server.vercel.app",
+    "VITE_GOOGLE_CLIENT_ID": ""
   },
   "rewrites": [
     {

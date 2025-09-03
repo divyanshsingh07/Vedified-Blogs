@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../contexts/AppContext'
 import { assets } from '../../assets/assets'
@@ -19,7 +19,7 @@ const Login = () => {
       const{data}=await axios.post("/api/admin/login",credentials);
       if(data.success){
         setToken(data.token);
-        localStorage.setItem("token",data.token);
+        localStorage.setItem("adminToken", data.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
         toast.success('Welcome back, Admin!');
         navigate("/admin");
@@ -35,6 +35,55 @@ const Login = () => {
       setIsLoading(false)
     }
   }
+
+  // Google Sign-In setup
+  const googleDivRef = useRef(null);
+  useEffect(() => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    if (!clientId) return; // Skip if not configured
+
+    // Load script if not already present
+    const existing = document.getElementById('google-gsi-script');
+    const init = () => {
+      /* global google */
+      if (!window.google || !google.accounts || !googleDivRef.current) return;
+      google.accounts.id.initialize({
+        client_id: clientId,
+        callback: async (response) => {
+          try {
+            const { data } = await axios.post('/api/admin/google-login', { credential: response.credential });
+            if (data.success) {
+              setToken(data.token);
+              localStorage.setItem('adminToken', data.token);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+              toast.success('Signed in with Google');
+              navigate('/admin');
+            } else {
+              toast.error(data.message || 'Google sign-in failed');
+            }
+          } catch (err) {
+            toast.error(err.response?.data?.message || 'Google sign-in failed');
+          }
+        },
+      });
+      google.accounts.id.renderButton(googleDivRef.current, { theme: 'outline', size: 'large', shape: 'pill', width: 320 });
+    };
+
+    if (!existing) {
+      const script = document.createElement('script');
+      script.id = 'google-gsi-script';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = init;
+      document.body.appendChild(script);
+      return () => {
+        script.onload = null;
+      };
+    } else {
+      init();
+    }
+  }, [axios, navigate, setToken]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-white to-hover-primary/5 p-4">
@@ -158,6 +207,18 @@ const Login = () => {
               </div>
             )}
           </button>
+
+          {/* Or divider */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+
+          {/* Google Sign-In Button */}
+          <div className="flex justify-center">
+            <div ref={googleDivRef} />
+          </div>
         </form>
 
         {/* Footer */}

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 import Blog from "../models/blog.js";
 import Comment from "../models/comments.js";
 
@@ -196,6 +197,57 @@ const getAdminAccounts = async (req, res) => {
     }
 };
 
+// Google OAuth login for admins
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleLogin = async (req, res) => {
+    try {
+        if (!googleClientId) {
+            return res.status(500).json({ success: false, message: "Missing GOOGLE_CLIENT_ID in server environment" });
+        }
+
+        const { credential } = req.body || {};
+        if (!credential) {
+            return res.status(400).json({ success: false, message: "Missing Google credential" });
+        }
+
+        const oauthClient = new OAuth2Client(googleClientId);
+        const ticket = await oauthClient.verifyIdToken({ idToken: credential, audience: googleClientId });
+        const payload = ticket.getPayload();
+
+        const email = payload?.email;
+        const emailVerified = payload?.email_verified;
+        const nameFromGoogle = payload?.name || "Admin";
+
+        if (!email || !emailVerified) {
+            return res.status(401).json({ success: false, message: "Unverified Google account" });
+        }
+
+        // Only allow login for configured admin emails
+        const adminAccount = ADMIN_ACCOUNTS.find(a => a.email === email);
+        if (!adminAccount) {
+            return res.status(403).json({ success: false, message: "This Google account is not authorized as an admin" });
+        }
+
+        const token = jwt.sign({
+            email,
+            name: adminAccount.name || nameFromGoogle,
+            role: "admin"
+        }, process.env.JWT_SECRET);
+
+        return res.json({
+            success: true,
+            token,
+            admin: {
+                name: adminAccount.name || nameFromGoogle,
+                email
+            }
+        });
+    } catch (error) {
+        console.error("[googleLogin] Error:", error);
+        return res.status(401).json({ success: false, message: "Google authentication failed" });
+    }
+}
+
 export {
     adminlogin, 
     getAllBlogsAdmin, 
@@ -204,5 +256,6 @@ export {
     deleteBlogAdmin, 
     deleteCommentAdmin, 
     approveCommentAdmin,
-    getAdminAccounts
+    getAdminAccounts,
+    googleLogin
 };
