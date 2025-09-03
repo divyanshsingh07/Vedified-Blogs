@@ -150,6 +150,15 @@ Vedified/
    PORT=4000
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
+   # Admin allowlist (one of the following)
+   # ADMIN_EMAIL=admin@yourdomain.com
+   # ADMIN_EMAILS=admin@yourdomain.com,editor@yourdomain.com
+   # Optional display names
+   # ADMIN_NAME=Admin Name
+   # ADMIN_NAMES=Admin,Editor
+   
+   # Google Sign-In
+   GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
    IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
    IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
    IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
@@ -200,6 +209,12 @@ Vedified/
 - `npm run build` - Build for production
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
+
+## 🔐 Google Authentication
+
+- The admin login page supports Google Sign-In. Only emails listed in `ADMIN_EMAIL` or `ADMIN_EMAILS` are allowed.
+- Client requires `VITE_GOOGLE_CLIENT_ID` (set in Vercel or local `.env` at repo root).
+- Server verifies Google ID tokens and issues a JWT used for admin APIs.
 
 ### Code Structure
 - **Components** are organized by feature and reusability

@@ -32,6 +32,21 @@ DB_NAME=vedified-blogs
 # JWT Authentication
 JWT_SECRET=your_super_secret_jwt_key
 
+# Admin Accounts (email allowlist)
+# Option A: Single admin
+# ADMIN_EMAIL=admin@yourdomain.com
+# ADMIN_NAME=Your Admin Name
+# Option B: Multiple admins (comma-separated)
+# ADMIN_EMAILS=admin@yourdomain.com,editor@yourdomain.com
+# ADMIN_NAMES=Admin,Editor
+
+# Google Sign-In
+# Use one of the following options:
+# Single client id
+GOOGLE_CLIENT_ID=your_google_oauth_client_id.apps.googleusercontent.com
+# Or multiple (comma-separated) if you have different origins
+# GOOGLE_CLIENT_IDS=id1.apps.googleusercontent.com,id2.apps.googleusercontent.com
+
 # ImageKit (for image uploads)
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
@@ -57,7 +72,7 @@ git push origin main
 
 ### 2. **Verify Environment Variables**
 - Visit: `https://your-vercel-url.vercel.app/env-check`
-- Should return `true` for all required variables
+- Should return `true` for all required variables including `hasGoogleClientId` and `adminEmailsConfigured`
 
 ### 3. **Test Endpoints**
 - Health check: `https://your-vercel-url.vercel.app/health`
@@ -113,9 +128,12 @@ Try creating a blog through your admin panel.
 
 ## 🚀 After Deployment
 
-1. Test blog creation with an actual image
-2. Verify images appear correctly on your blog
-3. Test AI content generation
-4. Test comment system
+1. Test Google sign-in button on `/admin` login page (client)
+2. Ensure allowed admin emails can sign in; non-allowed are rejected
+3. Confirm `Authorization: Bearer <token>` is attached in admin API calls
+4. Test blog creation with an actual image
+5. Verify images appear correctly on your blog
+6. Test AI content generation
+7. Test comment system
 
 Your blog should now work perfectly in production! 🎉
