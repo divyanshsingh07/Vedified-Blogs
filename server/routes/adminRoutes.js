@@ -5,13 +5,15 @@ import {
     deleteBlogAdmin, 
     deleteCommentAdmin, 
     approveCommentAdmin,
-    getAdminAccounts
+    getAdminAccounts,
+    googleLogin
 } from "../controlers/admincontrole.js";
 import express from "express";
 
 const adminRout = express.Router();
 
 adminRout.post("/login", adminlogin);
+adminRout.post("/google-login", googleLogin);
 adminRout.get("/admin-accounts", getAdminAccounts);
 adminRout.get("/comments", getAllCommentsAdmin);
 adminRout.get("/dashboard", getDashboardData);

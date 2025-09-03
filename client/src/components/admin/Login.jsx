@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../contexts/AppContext'
 import { assets } from '../../assets/assets'
@@ -19,7 +19,7 @@ const Login = () => {
       const{data}=await axios.post("/api/admin/login",credentials);
       if(data.success){
         setToken(data.token);
-        localStorage.setItem("token",data.token);
+        localStorage.setItem("adminToken",data.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
         toast.success('Welcome back, Admin!');
         navigate("/admin");
@@ -35,6 +35,47 @@ const Login = () => {
       setIsLoading(false)
     }
   }
+
+  // Google Sign-In integration
+  const googleDivRef = useRef(null);
+  useEffect(() => {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+    if (!window.google || !googleClientId) return;
+
+    try {
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: async (response) => {
+          try {
+            const { data } = await axios.post('/api/admin/google-login', { credential: response.credential });
+            if (data.success) {
+              setToken(data.token);
+              localStorage.setItem('adminToken', data.token);
+              axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+              toast.success('Signed in with Google');
+              navigate('/admin');
+            } else {
+              toast.error(data.message || 'Google sign-in failed');
+            }
+          } catch (err) {
+            toast.error(err.response?.data?.message || 'Google sign-in failed');
+          }
+        }
+      });
+
+      if (googleDivRef.current) {
+        window.google.accounts.id.renderButton(googleDivRef.current, {
+          theme: 'outline',
+          size: 'large',
+          type: 'standard',
+          text: 'signin_with',
+          shape: 'pill'
+        });
+      }
+    } catch (err) {
+      console.error('Google Sign-In init error', err);
+    }
+  }, [axios, navigate, setToken]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-white to-hover-primary/5 p-4">
@@ -158,6 +199,16 @@ const Login = () => {
               </div>
             )}
           </button>
+
+          {/* Google Sign-In */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-px bg-gray-200" />
+            <span className="text-xs text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-200" />
+          </div>
+          <div className="flex justify-center">
+            <div ref={googleDivRef}></div>
+          </div>
         </form>
 
         {/* Footer */}
