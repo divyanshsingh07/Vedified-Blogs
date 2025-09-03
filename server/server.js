@@ -53,7 +53,17 @@ app.get('/env-check', (req, res) => {
     hasGeminiKey: !!process.env.GEMINI_API_KEY,
     hasGoogleClientId: !!process.env.GOOGLE_CLIENT_ID || !!process.env.GOOGLE_CLIENT_IDS,
     adminEmailsConfigured: !!process.env.ADMIN_EMAIL || !!process.env.ADMIN_EMAILS,
-    vercelEnv: process.env.VERCEL_ENV || 'none'
+    vercelEnv: process.env.VERCEL_ENV || 'none',
+    deploymentTime: new Date().toISOString()
+  });
+});
+
+// Test endpoint to verify firebase-login route exists
+app.post('/test-firebase-login', (req, res) => {
+  res.json({ 
+    success: true, 
+    message: "Firebase login endpoint test - server is updated",
+    timestamp: new Date().toISOString()
   });
 });
 
