@@ -18,9 +18,14 @@ import admin from "firebase-admin";
 
 const adminRout = express.Router();
 
+// Debug: Log route registration
+console.log('🔧 Registering admin routes...');
+
 adminRout.post("/login", adminlogin);
 adminRout.post("/google-login", googleLogin);
 adminRout.post("/firebase-login", firebaseLogin);
+
+console.log('✅ Admin routes registered, including firebase-login');
 adminRout.get("/admin-accounts", getAdminAccounts);
 adminRout.delete("/admin-account", deleteAdminAccount);
 adminRout.get("/comments", getAllCommentsAdmin);
