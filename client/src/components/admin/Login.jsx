@@ -40,7 +40,8 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     if (!auth || !googleProvider) {
-      toast.error('Firebase not configured. Please set up environment variables.');
+      console.error('❌ Firebase not configured:', { auth: !!auth, googleProvider: !!googleProvider });
+      toast.error('Firebase not configured. Please check console for details.');
       return;
     }
 
