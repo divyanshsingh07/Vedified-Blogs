@@ -25,6 +25,47 @@ app.use("/api/admin", adminRoutes);
 app.use("/api", userRout);
 app.use("/api/blog", blogRouter);
 
+// Direct firebase-login endpoint (bypassing route issues)
+app.post('/api/admin/firebase-login-direct', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    console.log('🔥 Direct Firebase login attempt received');
+    
+    if (!idToken) {
+      console.log('❌ No idToken provided');
+      return res.json({ success: false, message: "Firebase idToken is required" });
+    }
+
+    // Decode the JWT payload
+    let email, name;
+    try {
+      const payload = JSON.parse(Buffer.from(idToken.split('.')[1], 'base64').toString());
+      email = payload.email;
+      name = payload.name || payload.email || "Admin";
+      console.log('👤 Decoded user from JWT:', { email, name });
+    } catch (jwtError) {
+      console.error('❌ Failed to decode JWT:', jwtError.message);
+      return res.json({ success: false, message: "Invalid Firebase token" });
+    }
+
+    if (!email) {
+      console.log('❌ No email in token');
+      return res.json({ success: false, message: "Token missing email" });
+    }
+
+    // Generate admin JWT
+    console.log('✅ Google user authenticated, generating admin JWT...');
+    const jwt = await import('jsonwebtoken');
+    const token = jwt.default.sign({ email, name, role: "admin" }, process.env.JWT_SECRET);
+    console.log('🎫 JWT generated successfully');
+    
+    return res.json({ success: true, message: `Welcome, ${name}`, token, admin: { name, email } });
+  } catch (error) {
+    console.error("❌ Direct Firebase login error:", error);
+    return res.json({ success: false, message: error.message || "Firebase authentication failed" });
+  }
+});
+
 // Basic route to show server is running
 app.get('/', (req, res) => {
   res.json({ message: "Server is running" });

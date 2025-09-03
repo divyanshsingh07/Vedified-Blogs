@@ -57,7 +57,7 @@ const Login = () => {
       
       // Send the ID token to your backend for verification
       console.log('📤 Sending to backend...');
-      const { data } = await axios.post("/api/admin/firebase-login", {
+      const { data } = await axios.post("/api/admin/firebase-login-direct", {
         idToken: idToken
       });
       
