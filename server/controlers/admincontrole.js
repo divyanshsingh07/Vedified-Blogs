@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import Blog from "../models/blog.js";
 import Comment from "../models/comments.js";
+import { OAuth2Client } from "google-auth-library";
+import firebaseAdmin from "../configs/firebaseAdmin.js";
 
 // Load admin accounts from environment variables (supports one or many)
 // Options:
@@ -58,6 +60,10 @@ const DUMMY_ADMIN_ACCOUNTS = [
     }
 ];
 
+// Previously: we restricted admin access by whitelist. Now we allow any Google-authenticated
+// user to access their own admin dashboard. Data remains scoped by their email.
+const GOOGLE_ADMIN_EMAILS = [];
+
 // Final admin accounts list (env-defined take precedence before dummies)
 const ADMIN_ACCOUNTS = [
     ...loadEnvAdminAccounts(),
@@ -106,6 +112,88 @@ const adminlogin = async (req, res) => {
     }
 }
 
+// Google Login
+const googleLogin = async (req, res) => {
+    try {
+        const { idToken } = req.body;
+        if (!process.env.GOOGLE_CLIENT_ID) {
+            return res.json({ success: false, message: "Missing GOOGLE_CLIENT_ID on server" });
+        }
+        if (!idToken) {
+            return res.json({ success: false, message: "Google idToken is required" });
+        }
+
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        const ticket = await client.verifyIdToken({ idToken, audience: process.env.GOOGLE_CLIENT_ID });
+        const payload = ticket.getPayload();
+        const email = payload?.email;
+        const name = payload?.name || "Admin";
+
+        if (!email) {
+            return res.json({ success: false, message: "Google account has no email" });
+        }
+
+        // Issue admin token for any Google-authenticated user.
+        const token = jwt.sign({ email, name, role: "admin" }, process.env.JWT_SECRET);
+        return res.json({ success: true, message: `Welcome, ${name}`, token, admin: { name, email } });
+    } catch (error) {
+        console.error("Google login error:", error);
+        return res.json({ success: false, message: error.message || "Google authentication failed" });
+    }
+}
+
+// Firebase Login: verify ID token from client (Google/email-password)
+const firebaseLogin = async (req, res) => {
+    try {
+        const { idToken } = req.body; // Firebase Auth ID token
+        console.log('🔥 Firebase login attempt received');
+        
+        if (!idToken) {
+            console.log('❌ No idToken provided');
+            return res.json({ success: false, message: "Firebase idToken is required" });
+        }
+
+        // For local development, we'll decode the JWT manually since Firebase Admin isn't configured
+        let email, name;
+        
+        if (firebaseAdmin?.auth) {
+            // Production: Use Firebase Admin SDK
+            console.log('🔍 Verifying Firebase token with Admin SDK...');
+            const decoded = await firebaseAdmin.auth().verifyIdToken(idToken);
+            email = decoded.email;
+            name = decoded.name || decoded.email || "Admin";
+        } else {
+            // Local development: Decode JWT manually (less secure but works for testing)
+            console.log('⚠️ Firebase Admin not configured, decoding JWT manually for local dev...');
+            try {
+                // Decode the JWT payload (this is not secure for production!)
+                const payload = JSON.parse(Buffer.from(idToken.split('.')[1], 'base64').toString());
+                email = payload.email;
+                name = payload.name || payload.email || "Admin";
+                console.log('👤 Decoded user from JWT:', { email, name });
+            } catch (jwtError) {
+                console.error('❌ Failed to decode JWT:', jwtError.message);
+                return res.json({ success: false, message: "Invalid Firebase token" });
+            }
+        }
+
+        if (!email) {
+            console.log('❌ No email in token');
+            return res.json({ success: false, message: "Token missing email" });
+        }
+
+        // Allow any Google/Firebase-authenticated email to receive an admin JWT.
+        console.log('✅ Google user authenticated, generating admin JWT...');
+        const token = jwt.sign({ email, name, role: "admin" }, process.env.JWT_SECRET);
+        console.log('🎫 JWT generated successfully');
+        
+        return res.json({ success: true, message: `Welcome, ${name}`, token, admin: { name, email } });
+    } catch (error) {
+        console.error("❌ Firebase login error:", error);
+        return res.json({ success: false, message: error.message || "Firebase authentication failed" });
+    }
+}
+
 const getAllBlogsAdmin = async (req, res) => {
     try{
         const blogs = await Blog.find({}).sort({createdAt: -1});
@@ -128,17 +216,27 @@ const getAllCommentsAdmin = async (req, res) => {
 
 const getDashboardData = async (req, res) => {
     try{
-       const recentBlogs = await Blog.find({}).sort({createdAt: -1}).limit(5);
-       const blogCount = await Blog.countDocuments();
-       const commentCount = await Comment.countDocuments();
-       const draftBlogs = await Blog.countDocuments({isPublished: false});
-       const dashboardData = {
-        recentBlogs,
-        blogCount,
-        commentCount,
-        draftBlogs
-       }
-       res.json({success: true, dashboardData});
+       // Scope to current user if available; fallback to global for legacy tokens
+       const authorFilter = req.user?.email ? { authorEmail: req.user.email } : {};
+
+        const recentBlogs = await Blog.find(authorFilter).sort({createdAt: -1}).limit(5);
+        const blogCount = await Blog.countDocuments(authorFilter);
+        const draftBlogs = await Blog.countDocuments({ ...authorFilter, isPublished: false });
+
+        // Count comments on the user's blogs only
+        const authorBlogs = await Blog.find(authorFilter).select('_id');
+        const blogIds = authorBlogs.map(b => b._id);
+        const commentCount = blogIds.length > 0 
+            ? await Comment.countDocuments({ blog: { $in: blogIds } })
+            : 0;
+
+        const dashboardData = {
+            recentBlogs,
+            blogCount,
+            commentCount,
+            draftBlogs
+        }
+        res.json({success: true, dashboardData});
     }
     catch(error){
         res.json({success: false, message: error.message});
@@ -196,6 +294,43 @@ const getAdminAccounts = async (req, res) => {
     }
 };
 
+const deleteAdminAccount = async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.json({ success: false, message: "Email is required" });
+        }
+        
+        // Find the admin account index
+        const adminIndex = ADMIN_ACCOUNTS.findIndex(admin => admin.email === email);
+        
+        if (adminIndex === -1) {
+            return res.json({ success: false, message: "Admin account not found" });
+        }
+        
+        // Check if it's a dummy account (can be deleted)
+        const isDummyAccount = DUMMY_ADMIN_ACCOUNTS.some(dummy => dummy.email === email);
+        
+        if (!isDummyAccount) {
+            return res.json({ 
+                success: false, 
+                message: "Cannot delete environment-configured admin accounts. Remove them from environment variables instead." 
+            });
+        }
+        
+        // Remove from dummy accounts
+        DUMMY_ADMIN_ACCOUNTS.splice(adminIndex, 1);
+        
+        res.json({
+            success: true,
+            message: `Admin account ${email} deleted successfully`
+        });
+    } catch (error) {
+        res.json({ success: false, message: error.message });
+    }
+};
+
 export {
     adminlogin, 
     getAllBlogsAdmin, 
@@ -204,5 +339,8 @@ export {
     deleteBlogAdmin, 
     deleteCommentAdmin, 
     approveCommentAdmin,
-    getAdminAccounts
+    getAdminAccounts,
+    deleteAdminAccount,
+    googleLogin,
+    firebaseLogin
 };

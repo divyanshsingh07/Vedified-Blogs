@@ -7,7 +7,9 @@ import { generateBlogContent } from '../configs/gemini.js';
 // Get all blogs
 export const getBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({}).sort({ createdAt: -1 });
+        // Return only the current user's blogs when authenticated
+        const authorFilter = req.user?.email ? { authorEmail: req.user.email } : {};
+        const blogs = await Blog.find(authorFilter).sort({ createdAt: -1 });
         res.json({
             success: true,
             message: "Blogs retrieved successfully",
@@ -165,6 +167,12 @@ export const createBlog = async (req, res) => {
                 throw new Error('Image is required to publish the blog');
             }
 
+            // attach author from auth middleware if available
+            if (req.user?.email) {
+                blogToSave.authorEmail = req.user.email;
+                blogToSave.authorName = req.user.name;
+            }
+
             const savedBlog = await Blog.create(blogToSave);
             console.log('Blog saved successfully:', savedBlog);
 
@@ -233,10 +241,15 @@ export const getBlogById = async (req, res) => {
 export const deleteBlogById = async (req, res) => {
     try {
         const {blogId} = req.params;
-        const blog = await Blog.findByIdAndDelete(blogId);
+        const blog = await Blog.findById(blogId);
         if(!blog){
             return res.json({success: false, message: "Blog not found"});
         }
+        // Ownership check
+        if (req.user?.email && blog.authorEmail && blog.authorEmail !== req.user.email) {
+            return res.json({ success: false, message: "Not authorized to delete this blog" });
+        }
+        await Blog.findByIdAndDelete(blogId);
         //delete comments associated with the blog
         await Comment.deleteMany({blog: blogId});
 
@@ -263,6 +276,10 @@ export const togglePublishedStatus = async (req, res) => {
         const blog = await Blog.findById(id);
         if (!blog) {
             return res.json({success: false, message: "Blog not found"});
+        }
+        // Ownership check
+        if (req.user?.email && blog.authorEmail && blog.authorEmail !== req.user.email) {
+            return res.json({ success: false, message: "Not authorized to update this blog" });
         }
         blog.isPublished = !blog.isPublished;
         await blog.save();
@@ -320,6 +337,10 @@ export const updateBlog = async (req, res) => {
         const existingBlog = await Blog.findById(blogId);
         if (!existingBlog) {
             return res.json({ success: false, message: "Blog not found" });
+        }
+        // Ownership check
+        if (req.user?.email && existingBlog.authorEmail && existingBlog.authorEmail !== req.user.email) {
+            return res.json({ success: false, message: "Not authorized to update this blog" });
         }
         
         // Update basic fields

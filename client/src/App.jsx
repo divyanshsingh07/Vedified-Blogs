@@ -9,7 +9,10 @@ import Dashboard from './pages/admin/Dashboard'
 import AddBlog from './pages/admin/AddBlog'
 import BlogList from './pages/admin/BlogList'
 import Comments from './pages/admin/Comments'
+import AdminAccounts from './components/admin/AdminAccounts'
 import Login from './components/admin/Login'
+import WriterLogin from './components/user/WriterLogin'
+import WriterDashboard from './pages/writer/WriterDashboard'
 import {Toaster} from 'react-hot-toast'
 
 const AppRoutes = () => {
@@ -22,6 +25,12 @@ const AppRoutes = () => {
         <Route index element={<Home />} />
         <Route path='blog' element={<Blog />} />
         <Route path='blog/:id' element={<Blog />} />
+        
+        {/* Writer Routes */}
+        <Route path='writer-login' element={<WriterLogin />} />
+        <Route path='writer' element={token ? <WriterDashboard /> : <WriterLogin />} />
+        
+        {/* Admin Routes */}
         <Route 
           path='admin' 
           element={
@@ -36,6 +45,7 @@ const AppRoutes = () => {
           <Route path='add-blog' element={token ? <AddBlog /> : <Login />} />
           <Route path='blog-list' element={token ? <BlogList /> : <Login />} />
           <Route path='comments' element={token ? <Comments /> : <Login />} />
+          <Route path='admin-accounts' element={token ? <AdminAccounts /> : <Login />} />
         </Route>
       </Routes>
     </div>

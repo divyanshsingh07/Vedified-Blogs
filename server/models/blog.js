@@ -4,6 +4,8 @@ const blogSchema = new mongoose.Schema({
     subtitle: {type: String, required: false},
     description: {type: String, required: false},
     category: {type: String, required: false},
+    authorEmail: { type: String, required: false, index: true },
+    authorName: { type: String, required: false },
     image: { 
         type: String, 
         required: function () { 

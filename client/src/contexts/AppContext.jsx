@@ -75,12 +75,15 @@ export const AppProvider = ({children}) => {
 
     // Validate token and set axios headers
     const validateAndSetToken = (tokenValue) => {
+        console.log('🔑 Setting token:', tokenValue ? 'Token received' : 'No token');
         if (tokenValue) {
             setToken(tokenValue);
             axios.defaults.headers.common["Authorization"] = `Bearer ${tokenValue}`;
+            console.log('✅ Token set successfully');
         } else {
             setToken(null);
             delete axios.defaults.headers.common["Authorization"];
+            console.log('❌ Token cleared');
         }
     };
 
@@ -88,26 +91,39 @@ export const AppProvider = ({children}) => {
     useEffect(() => {
         fetchBlogs();
         
-        // Check for admin token in localStorage
+        // Check for tokens in localStorage (admin or user)
         const adminToken = localStorage.getItem("adminToken");
+        const userToken = localStorage.getItem("userToken");
+        const activeToken = adminToken || userToken;
         
-        if (adminToken) {
+        console.log('🔍 Checking localStorage for tokens:', {
+            adminToken: adminToken ? 'Found' : 'Not found',
+            userToken: userToken ? 'Found' : 'Not found',
+            activeToken: activeToken ? 'Found' : 'Not found'
+        });
+        
+        if (activeToken) {
             // Validate token by making a test request
-            validateAndSetToken(adminToken);
+            validateAndSetToken(activeToken);
             
-            // Test token validity with a backend request
-            axios.get("/api/admin/dashboard")
+            // Test token validity with appropriate endpoint
+            const testEndpoint = adminToken ? "/api/admin/dashboard" : "/api/user/dashboard";
+            axios.get(testEndpoint)
                 .then(() => {
                     // Token is valid, keep it
-                    validateAndSetToken(adminToken);
+                    console.log('✅ Token validation successful');
+                    validateAndSetToken(activeToken);
                 })
-                .catch(() => {
+                .catch((error) => {
                     // Token is invalid, remove it
+                    console.log('❌ Token validation failed:', error.response?.status);
                     localStorage.removeItem("adminToken");
+                    localStorage.removeItem("userToken");
                     validateAndSetToken(null);
                     toast.error("Session expired. Please login again.");
                 });
         } else {
+            console.log('ℹ️ No tokens found in localStorage');
             validateAndSetToken(null);
         }
     }, []);

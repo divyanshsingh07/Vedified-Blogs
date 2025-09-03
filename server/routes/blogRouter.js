@@ -64,7 +64,7 @@ const upload = multer({
 });
 
 // Blog routes
-router.get('/', getBlogs); 
+router.get('/', authenticateToken, getBlogs); 
 router.get('/all', getAllBlogs);
 router.post('/create', authenticateToken, upload.single('image'), createBlog);
 router.post('/add', authenticateToken, upload.single('image'), createBlog);
