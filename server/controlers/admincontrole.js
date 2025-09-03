@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import Blog from "../models/blog.js";
 import Comment from "../models/comments.js";
+import { OAuth2Client } from "google-auth-library";
 
 // Load admin accounts from environment variables (supports one or many)
 // Options:
@@ -206,3 +207,61 @@ export {
     approveCommentAdmin,
     getAdminAccounts
 };
+
+// Google Sign-In for Admins
+const googleLogin = async (req, res) => {
+    try {
+        const { credential, idToken, token } = req.body || {};
+        const googleIdToken = credential || idToken || token;
+
+        if (!googleIdToken) {
+            return res.json({ success: false, message: "Google credential (ID token) is required" });
+        }
+
+        // Support single or multiple client IDs (comma-separated)
+        const audience = (process.env.GOOGLE_CLIENT_IDS
+            ? process.env.GOOGLE_CLIENT_IDS.split(",").map(s => s.trim()).filter(Boolean)
+            : (process.env.GOOGLE_CLIENT_ID ? [process.env.GOOGLE_CLIENT_ID] : undefined)) || undefined;
+
+        const oauthClient = new OAuth2Client();
+        const ticket = await oauthClient.verifyIdToken({ idToken: googleIdToken, audience });
+        const payload = ticket.getPayload();
+
+        const email = payload?.email;
+        const emailVerified = payload?.email_verified;
+        const name = payload?.name || "Admin";
+
+        if (!email || !emailVerified) {
+            return res.json({ success: false, message: "Email not verified with Google account" });
+        }
+
+        // Determine allowed admin emails
+        const envAdmins = loadEnvAdminAccounts();
+        const allowedEmails = (envAdmins.length > 0
+            ? envAdmins.map(a => a.email.toLowerCase())
+            : (process.env.NODE_ENV === 'production' ? [] : DUMMY_ADMIN_ACCOUNTS.map(a => a.email.toLowerCase())));
+
+        const isAllowed = allowedEmails.includes(email.toLowerCase());
+        if (!isAllowed) {
+            return res.json({ success: false, message: "Access denied: email is not an authorized admin" });
+        }
+
+        const signedToken = jwt.sign({ 
+            email,
+            name,
+            role: "admin",
+            provider: "google"
+        }, process.env.JWT_SECRET);
+
+        return res.json({
+            success: true,
+            message: `Welcome back, ${name}!`,
+            token: signedToken,
+            admin: { name, email }
+        });
+    } catch (error) {
+        return res.json({ success: false, message: error.message });
+    }
+};
+
+export { googleLogin };
