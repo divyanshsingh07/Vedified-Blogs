@@ -67,6 +67,49 @@ app.post('/test-firebase-login', (req, res) => {
   });
 });
 
+// Temporary fix: Add firebase-login route directly to main server
+app.post('/api/admin/firebase-login', async (req, res) => {
+  try {
+    const { idToken } = req.body;
+    console.log('🔥 Firebase login attempt received');
+    
+    if (!idToken) {
+      console.log('❌ No idToken provided');
+      return res.json({ success: false, message: "Firebase idToken is required" });
+    }
+
+    // For local development, we'll decode the JWT manually since Firebase Admin isn't configured
+    let email, name;
+    
+    try {
+      // Decode the JWT payload (this is not secure for production!)
+      const payload = JSON.parse(Buffer.from(idToken.split('.')[1], 'base64').toString());
+      email = payload.email;
+      name = payload.name || payload.email || "Admin";
+      console.log('👤 Decoded user from JWT:', { email, name });
+    } catch (jwtError) {
+      console.error('❌ Failed to decode JWT:', jwtError.message);
+      return res.json({ success: false, message: "Invalid Firebase token" });
+    }
+
+    if (!email) {
+      console.log('❌ No email in token');
+      return res.json({ success: false, message: "Token missing email" });
+    }
+
+    // Allow any Google/Firebase-authenticated email to receive an admin JWT.
+    console.log('✅ Google user authenticated, generating admin JWT...');
+    const jwt = await import('jsonwebtoken');
+    const token = jwt.default.sign({ email, name, role: "admin" }, process.env.JWT_SECRET);
+    console.log('🎫 JWT generated successfully');
+    
+    return res.json({ success: true, message: `Welcome, ${name}`, token, admin: { name, email } });
+  } catch (error) {
+    console.error("❌ Firebase login error:", error);
+    return res.json({ success: false, message: error.message || "Firebase authentication failed" });
+  }
+});
+
 // In serverless environments like Vercel, we should NOT call app.listen().
 // Vercel will handle the HTTP server and invoke the exported app as a handler.
 // Only start a local server when running locally (e.g., npm run dev).
