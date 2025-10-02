@@ -123,8 +123,6 @@ const AdminAccounts = () => {
       <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <h3 className="text-sm font-medium text-blue-800 mb-2">Login Credentials:</h3>
         <div className="space-y-2 text-sm text-blue-700">
-          <p><strong>Super Admin:</strong> admin@vedified.com / admin123</p>
-          <p><strong>Content Editor:</strong> editor@vedified.com / editor123</p>
           <p><strong>Blog Manager:</strong> manager@vedified.com / manager123</p>
           <p><strong>Test Account:</strong> test@vedified.com / test123</p>
           <p><strong>Demo User:</strong> demo@vedified.com / demo123</p>

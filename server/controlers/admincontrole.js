@@ -49,14 +49,19 @@ const loadEnvAdminAccounts = () => {
 // Keep ONLY two dummy accounts as fallback
 const DUMMY_ADMIN_ACCOUNTS = [
     {
-        email: "admin@vedified.com",
-        password: "admin123",
-        name: "Super Admin"
+        email: "manager@vedified.com",
+        password: "manager123",
+        name: "Blog Manager"
     },
     {
-        email: "editor@vedified.com",
-        password: "editor123",
-        name: "Content Editor"
+        email: "test@vedified.com",
+        password: "test123",
+        name: "Test Account"
+    },
+    {
+        email: "demo@vedified.com",
+        password: "demo123",
+        name: "Demo User"
     }
 ];
 

@@ -434,13 +434,24 @@ export const getBlogComments = async (req, res) => {
 export const deleteComment = async (req, res) => {
     try {
         const { commentId } = req.params;
-        const comment = await Comment.findByIdAndDelete(commentId);
-        
+        // Find the comment first
+        const comment = await Comment.findById(commentId);
         if (!comment) {
-            return res.json({success: false, message: "Comment not found"});
+            return res.json({ success: false, message: "Comment not found" });
         }
-        
-        res.json({success: true, message: "Comment deleted successfully"});
+
+        // Authorization: only the blog owner can delete comments on their blog
+        const blog = await Blog.findById(comment.blog);
+        if (!blog) {
+            return res.json({ success: false, message: "Parent blog not found" });
+        }
+
+        if (!req.user?.email || blog.authorEmail !== req.user.email) {
+            return res.json({ success: false, message: "Not authorized to delete this comment" });
+        }
+
+        await Comment.findByIdAndDelete(commentId);
+        res.json({ success: true, message: "Comment deleted successfully" });
     } catch (error) {
         res.json({success: false, message: error.message});
     }
