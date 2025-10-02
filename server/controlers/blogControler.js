@@ -216,7 +216,7 @@ export const createBlog = async (req, res) => {
 // Get all published blogs
 export const getAllBlogs = async (req, res) => {
     try {
-        const blogs = await Blog.find({isPublished: true});
+        const blogs = await Blog.find({isPublished: true}).sort({ createdAt: -1 });
         res.json({success: true, message: "Blogs retrieved successfully", data: blogs});
     } catch (error) {
         res.json({success: false, message: error.message});
