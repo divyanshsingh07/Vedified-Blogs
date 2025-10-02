@@ -542,6 +542,6 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ by the Vedified Team**
+**Built with ❤️ by the Divyansh**
 
-*Last updated: January 2025*
+*Last updated: Oct 2025*
