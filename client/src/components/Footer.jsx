@@ -3,37 +3,49 @@ import { assets, footer_data } from '../assets/assets'
 
 const Footer = () => {
   return (
-    <div className='px-5 md:px-16 xl:px-24 lg:px-32 bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 border-t border-slate-200/60'>
-      <div className='flex flex-col md:flex-row items-start justify-between gap-10 py-12 border-b border-slate-300/40'>
-        <div className="group">
-          <img src={assets.logo} alt="logo-footer" className='w-32 sm:w-44 transition-transform duration-300 group-hover:scale-105' />
-          <p className='max-w-[400px] mt-6 text-slate-600 leading-relaxed font-medium tracking-wide group-hover:text-slate-700 transition-colors duration-300'>
-          Vedified is an AI-powered blogging platform that helps you create, manage, and share blogs effortlessly. With smart writing assistance, elegant themes, and a seamless dashboard, it empowers creators to focus on ideas while AI handles formatting and style—making blogging faster, smarter, and more engaging.
+    <div className='px-5 md:px-16 xl:px-24 lg:px-32 bg-white border-t border-slate-200/60'>
+      <div className='py-12 grid grid-cols-1 md:grid-cols-3 gap-10 items-start'>
+        <div>
+          <div className='inline-flex items-center gap-3'>
+            <img src={assets.logo} alt="logo-footer" className='w-32 sm:w-44' />
+          </div>
+          <div className='h-1 w-20 bg-gradient-to-r from-orange-500 via-pink-500 to-fuchsia-600 rounded-full mt-3'></div>
+          <p className='max-w-[420px] mt-5 text-slate-600 leading-relaxed font-medium'>
+            Vedified helps you write, publish, and grow—powered by AI, designed for creators.
           </p>
         </div>
-        <div className='flex flex-wrap justify-between w-full md:w-[45%] gap-8'>
-          {footer_data.map((section,index)=>
-          <div key={index} className="group">
-            <h3 className='cursor-pointer text-xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 mb-4 tracking-tight'>
-              {section.title}
-            </h3>
-            <ul className='space-y-2'>
-              {section.links.map((link,i)=>
-              <li key={i} className='group/link'>
-                <a href="#" className='text-slate-500 hover:text-hover-primary transition-all duration-300 font-medium tracking-wide relative inline-block group-hover/link:translate-x-1'>
-                  {link}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover/link:w-full transition-all duration-300"></span>
-                </a>
-              </li>
-              )}
+
+        {/* Newsletter Subscription */}
+        <div>
+          <h3 className='text-slate-800 font-bold mb-3'>Subscribe to our newsletter</h3>
+          <p className='text-slate-500 text-sm mb-4'>Get the latest posts and platform updates.</p>
+          <form className='flex items-center gap-2'>
+            <input type='email' placeholder='Enter your email' className='flex-1 rounded-xl border border-slate-200 px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-pink-200' />
+            <button type='button' className='rounded-xl bg-gradient-to-r from-orange-500 via-pink-500 to-fuchsia-600 text-white px-5 py-2.5 text-sm font-semibold shadow hover:shadow-[0_0_24px_rgba(236,72,153,0.35)] transition-all'>Subscribe</button>
+          </form>
+        </div>
+
+        {/* Quick Links */}
+        <div className='grid grid-cols-2 gap-6'>
+          <div>
+            <h4 className='text-sm font-bold text-slate-800 mb-3'>Company</h4>
+            <ul className='space-y-2 text-sm text-slate-600'>
+              <li><a href='#' className='hover:text-pink-500'>About</a></li>
+              <li><a href='#' className='hover:text-pink-500'>Contact</a></li>
             </ul>
           </div>
-          )}
+          <div>
+            <h4 className='text-sm font-bold text-slate-800 mb-3'>Legal</h4>
+            <ul className='space-y-2 text-sm text-slate-600'>
+              <li><a href='#' className='hover:text-pink-500'>Privacy</a></li>
+              <li><a href='#' className='hover:text-pink-500'>Terms</a></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <p className='py-6 text-center text-sm md:text-base text-slate-500 font-medium tracking-wide bg-gradient-to-r from-slate-500 to-slate-400 bg-clip-text text-transparent'>
-        Copyright 2025 all right reserve
-      </p>
+      <div className='py-6 border-t border-slate-200 text-center'>
+        <p className='text-xs md:text-sm text-slate-500'>© 2025 Vedified. All rights reserved.</p>
+      </div>
     </div>
   )
 }

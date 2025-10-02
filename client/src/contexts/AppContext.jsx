@@ -40,6 +40,7 @@ const AppContext = createContext();
 export const AppProvider = ({children}) => {
     const navigate = useNavigate();
     const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
     const [blogs, setBlogs] = useState([]);
     const [input, setInput] = useState("");
 
@@ -80,10 +81,28 @@ export const AppProvider = ({children}) => {
             setToken(tokenValue);
             axios.defaults.headers.common["Authorization"] = `Bearer ${tokenValue}`;
             console.log('✅ Token set successfully');
+
+            // Try to decode JWT for user info (name, email, role)
+            try {
+                const payloadBase64 = tokenValue.split('.')[1];
+                if (payloadBase64) {
+                    const payloadJson = JSON.parse(atob(payloadBase64));
+                    const decodedUser = {
+                        name: payloadJson.name || null,
+                        email: payloadJson.email || null,
+                        role: payloadJson.role || null,
+                    };
+                    setUser(decodedUser);
+                }
+            } catch (e) {
+                console.log('JWT decode failed (non-fatal):', e?.message);
+                setUser(null);
+            }
         } else {
             setToken(null);
             delete axios.defaults.headers.common["Authorization"];
             console.log('❌ Token cleared');
+            setUser(null);
         }
     };
 
@@ -132,6 +151,7 @@ export const AppProvider = ({children}) => {
         axios,
         navigate,
         token,
+        user,
         setToken: validateAndSetToken, // Use the wrapper function
         blogs,
         setBlogs,

@@ -7,8 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#5044E5',
-        'hover-primary': '#14B8A6',
+        primary: '#7C3AED', // Vibrant violet
+        'hover-primary': '#06B6D4', // Bright cyan
+        accent: '#F43F5E', // Rose accent
       },
     },
   },

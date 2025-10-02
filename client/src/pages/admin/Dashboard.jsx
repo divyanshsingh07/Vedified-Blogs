@@ -3,7 +3,6 @@ import { useAppContext } from '../../contexts/AppContext'
 import { assets } from '../../assets/assets'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
-import AdminAccounts from '../../components/admin/AdminAccounts'
 
 const Dashboard = () => {
   const { axios } = useAppContext()
@@ -243,10 +242,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Admin Accounts Section */}
-      <div className="mb-6 sm:mb-8">
-        <AdminAccounts />
-      </div>
 
       {/* Latest Blogs Section */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
