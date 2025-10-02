@@ -20,11 +20,17 @@ pnpm-debug.log*
 *.swp
 *.swo
 
-# Env files
+# Environment variables (NEVER commit these!)
 .env
 .env.*
+.env.local
+.env.development
+.env.production
+.env.test
 server/.env
+server/.env.*
 client/.env
+client/.env.*
 
 # Vercel
 .vercel
