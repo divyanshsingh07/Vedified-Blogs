@@ -96,29 +96,29 @@ const Comments = () => {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6 overflow-x-hidden">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 overflow-x-hidden bg-gray-100">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Comments Management</h1>
+        <h1 className="text-xl sm:text-2xl font-black text-black">Comments Management</h1>
         <div className="mt-4 sm:mt-0 flex items-center gap-3">
-          <div className="flex items-center gap-4 text-sm text-gray-600">
+          <div className="flex items-center gap-4 text-sm text-gray-800 font-semibold">
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-black rounded-full"></span>
               Total: {comments.length}
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-green-600 rounded-full"></span>
               Approved: {comments.filter(c => c.isApproved === true).length}
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-yellow-600 rounded-full"></span>
               Pending: {comments.filter(c => c.isApproved === false).length}
             </span>
           </div>
           <button
             onClick={fetchComments}
             disabled={loading}
-            className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-hover-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm"
+            className="bg-black text-white px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-bold uppercase tracking-wide border-2 border-black"
           >
             {loading ? (
               <>
@@ -138,13 +138,13 @@ const Comments = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-4 rounded-lg shadow-lg border-2 border-black">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
     <div>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              className="w-full sm:w-auto px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base font-semibold"
             >
               <option value="all">All Comments</option>
               <option value="approved">Approved</option>
@@ -155,25 +155,25 @@ const Comments = () => {
       </div>
 
       {/* Comments List */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden">
         {/* Mobile Card View */}
         <div className="block lg:hidden">
           {loading ? (
-            <div className="p-4 text-center text-gray-500">Loading comments...</div>
+            <div className="p-4 text-center text-gray-800 font-semibold">Loading comments...</div>
           ) : filteredComments.length === 0 ? (
-            <div className="p-4 text-center text-gray-500">No comments found matching your filter.</div>
+            <div className="p-4 text-center text-gray-800 font-semibold">No comments found matching your filter.</div>
           ) : (
             filteredComments.map((comment, index) => (
-              <div key={comment._id} className="p-4 sm:p-6 border-b border-gray-200 last:border-b-0">
+              <div key={comment._id} className="p-4 sm:p-6 border-b-2 border-black last:border-b-0">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium mr-3">
+                    <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">
                       {index + 1}
                     </span>
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-full ${
                       comment.isApproved === true
-                        ? 'bg-green-100 text-green-800 border border-green-200' 
-                        : 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+                        ? 'bg-green-100 text-green-800 border border-green-800' 
+                        : 'bg-yellow-100 text-yellow-800 border border-yellow-800'
                     }`}>
                       {comment.isApproved === true ? (
                         <>
@@ -192,17 +192,17 @@ const Comments = () => {
                       )}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-800 font-semibold">
                     {formatDate(comment.createdAt)}
                   </div>
                 </div>
                 
                 <div className="mb-3">
-                  <p className="text-sm text-gray-900 mb-2">{comment.content}</p>
-                  <div className="flex items-center text-xs text-gray-600">
-                    <span className="font-medium mr-2">By: {comment.name}</span>
+                  <p className="text-sm text-black mb-2 font-semibold">{comment.content}</p>
+                  <div className="flex items-center text-xs text-gray-800">
+                    <span className="font-bold mr-2">By: {comment.name}</span>
                     <span>•</span>
-                    <span className="ml-2">{comment.blog?.title || 'Unknown Blog'}</span>
+                    <span className="ml-2 font-semibold">{comment.blog?.title || 'Unknown Blog'}</span>
                   </div>
                 </div>
                 
@@ -210,7 +210,7 @@ const Comments = () => {
                   {!comment.isApproved && (
                     <button 
                       onClick={() => handleApprove(comment._id)}
-                                                  className="flex-1 text-green-600 hover:text-hover-primary bg-green-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                                                  className="flex-1 text-green-600 hover:text-green-800 bg-green-100 hover:bg-green-200 px-3 py-2 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 border border-green-600"
                     >
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -220,7 +220,7 @@ const Comments = () => {
                   )}
                   <button 
                     onClick={() => handleDelete(comment._id)}
-                                                className="flex-1 text-red-600 hover:text-hover-primary bg-red-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                                                className="flex-1 text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-3 py-2 rounded-md text-xs font-bold transition-colors flex items-center justify-center gap-1 border border-red-600"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -236,40 +236,40 @@ const Comments = () => {
         {/* Desktop Table View */}
         <div className="hidden lg:block overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-amber-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Comment</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blog</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">#</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Comment</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Blog</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Author</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-black">
               {loading ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                  <td colSpan="6" className="px-6 py-4 whitespace-nowrap text-center text-gray-800 font-semibold">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black"></div>
                       Loading comments...
                     </div>
                   </td>
                 </tr>
               ) : filteredComments.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-4 whitespace-nowrap text-center text-gray-500">
+                  <td colSpan="6" className="px-6 py-4 whitespace-nowrap text-center text-gray-800 font-semibold">
                     No comments found matching your filter.
                   </td>
                 </tr>
               ) : (
                 filteredComments.map((comment, index) => (
-                  <tr key={comment._id} className="hover:bg-hover-primary/10">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
+                  <tr key={comment._id} className="hover:bg-amber-100">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black">{index + 1}</td>
                     <td className="px-6 py-4">
                       <div className="max-w-[300px]">
-                        <p className="text-sm text-gray-900 truncate">{comment.content}</p>
-                        <p className="text-xs text-gray-500 mt-1">{formatDate(comment.createdAt)}</p>
+                        <p className="text-sm text-black truncate font-semibold">{comment.content}</p>
+                        <p className="text-xs text-gray-800 mt-1 font-semibold">{formatDate(comment.createdAt)}</p>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -277,23 +277,23 @@ const Comments = () => {
                         <img 
                           src={comment.blog?.image || assets.dummy} 
                           alt={comment.blog?.title || 'Unknown Blog'} 
-                          className="w-10 h-10 rounded-lg object-cover mr-3"
+                          className="w-10 h-10 rounded-lg object-cover mr-3 border-2 border-black"
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-gray-900 truncate">
+                          <p className="text-sm font-bold text-black truncate">
                             {comment.blog?.title || 'Unknown Blog'}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black">
                       {comment.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-full ${
                         comment.isApproved === true
-                          ? 'bg-green-100 text-green-800 border border-green-200' 
-                          : 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+                          ? 'bg-green-100 text-green-800 border border-green-800' 
+                          : 'bg-yellow-100 text-yellow-800 border border-yellow-800'
                       }`}>
                         {comment.isApproved === true ? (
                           <>
@@ -317,7 +317,7 @@ const Comments = () => {
                         {!comment.isApproved && (
                           <button 
                             onClick={() => handleApprove(comment._id)}
-                            className="text-green-600 hover:text-hover-primary bg-green-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
+                            className="text-green-600 hover:text-green-800 bg-green-100 hover:bg-green-200 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1 font-bold border border-green-600"
                           >
                             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -327,7 +327,7 @@ const Comments = () => {
                         )}
                         <button 
                           onClick={() => handleDelete(comment._id)}
-                                                      className="text-red-600 hover:text-hover-primary bg-red-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1"
+                                                      className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-md text-xs transition-colors flex items-center gap-1 font-bold border border-red-600"
                         >
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>

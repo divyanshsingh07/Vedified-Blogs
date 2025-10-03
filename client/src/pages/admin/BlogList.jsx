@@ -233,7 +233,7 @@ const BlogList = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-gray-100">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Blog List</h1>

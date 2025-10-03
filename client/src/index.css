@@ -10,11 +10,11 @@ html, body, #root {
 }
 
 body {
-  background-color: #fff7ed; /* soft warm background */
+  background-color: #c7c7c7; /* light newspaper gray */
   background-image: 
-    radial-gradient(1000px 500px at 0% 0%, rgba(249, 115, 22, 0.10), transparent 60%),  /* orange glow */
-    radial-gradient(900px 450px at 100% 10%, rgba(236, 72, 153, 0.10), transparent 60%), /* pink glow */
-    linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,1));
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size: 20px 20px; /* subtle grid pattern like newspaper */
 }
 
 ::-webkit-scrollbar {

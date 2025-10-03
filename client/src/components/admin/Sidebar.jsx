@@ -46,7 +46,7 @@ const Sidebar = () => {
           />
           <span
             className={`
-              ml-2 text-lg lg:text-xl font-bold text-gray-900 truncate 
+              ml-2 text-lg lg:text-xl font-black text-black truncate 
               transition-opacity duration-300
               ${isMobile ? 'opacity-100' : (isSmallScreen ? (isPinned ? 'opacity-100' : 'opacity-0 group-hover:opacity-100') : 'opacity-100')}
             `}
@@ -66,8 +66,8 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
+                ? 'bg-black text-white border-l-4 border-black'
+                : 'text-gray-800 hover:bg-amber-100 hover:text-black font-semibold'
             }`
           }
         >
@@ -107,8 +107,8 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
+                ? 'bg-black text-white border-l-4 border-black'
+                : 'text-gray-800 hover:bg-amber-100 hover:text-black font-semibold'
             }`
           }
         >
@@ -134,8 +134,8 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
+                ? 'bg-black text-white border-l-4 border-black'
+                : 'text-gray-800 hover:bg-amber-100 hover:text-black font-semibold'
             }`
           }
         >
@@ -161,8 +161,8 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 ${
               isActive
-                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-hover-primary'
+                ? 'bg-black text-white border-l-4 border-black'
+                : 'text-gray-800 hover:bg-amber-100 hover:text-black font-semibold'
             }`
           }
         >
@@ -203,12 +203,12 @@ const Sidebar = () => {
       {/* Mobile Menu Button */}
       {isMobile && (
         <button
-          className="mobile-menu-button fixed bottom-4 left-4 z-50 bg-white border border-gray-200 rounded-lg p-2 shadow-md hover:shadow-lg transition-shadow md:hidden"
+          className="mobile-menu-button fixed bottom-4 left-4 z-50 bg-amber-50 border-2 border-black rounded-lg p-2 shadow-lg hover:shadow-xl transition-shadow md:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle navigation menu"
         >
           <svg
-            className={`w-6 h-6 text-gray-600 transition-transform duration-300 ${
+            className={`w-6 h-6 text-black transition-transform duration-300 ${
               isMobileMenuOpen ? 'rotate-90' : ''
             }`}
             fill="none"
@@ -238,11 +238,11 @@ const Sidebar = () => {
       {!isMobile && isSmallScreen && (
         <button
           onClick={() => setIsPinned(!isPinned)}
-          className="fixed bottom-4 left-4 z-50 bg-white border border-gray-200 rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
+          className="fixed bottom-4 left-4 z-50 bg-amber-50 border-2 border-black rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110"
           title={isPinned ? 'Unpin sidebar' : 'Pin sidebar'}
         >
           <svg
-            className={`w-5 h-5 text-gray-600 transition-transform duration-300 ${
+            className={`w-5 h-5 text-black transition-transform duration-300 ${
               !isPinned ? 'rotate-180' : ''
             }`}
             fill="none"
@@ -268,7 +268,7 @@ const Sidebar = () => {
       {!isMobile && (
         <div
           className={`
-            group relative h-full bg-white shadow-lg border-r border-gray-200 
+            group relative h-full bg-amber-50 shadow-lg border-r-2 border-black 
             transition-all duration-300 ease-in-out
             ${isSmallScreen ? (isPinned ? 'w-64' : 'w-16 hover:w-64') : 'w-64'}
           `}
@@ -284,7 +284,7 @@ const Sidebar = () => {
       {isMobile && (
         <div
           className={`
-            mobile-sidebar fixed left-0 top-0   h-full w-full bg-white shadow-xl border-r border-gray-200 
+            mobile-sidebar fixed left-0 top-0   h-full w-full bg-amber-50 shadow-xl border-r-2 border-black 
             transform transition-transform duration-300 ease-in-out z-50 md:hidden
             ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
           `}

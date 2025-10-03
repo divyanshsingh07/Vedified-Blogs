@@ -11,15 +11,7 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({
-  origin: [
-    'http://localhost:5173', // Vite dev server
-    'http://localhost:3000', // Alternative dev port
-    'https://vedified-web.onrender.com', // Render frontend
-    'https://vedified-web.vercel.app' // Fallback Vercel URL
-  ],
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -159,12 +151,16 @@ app.post('/api/admin/firebase-login', async (req, res) => {
   }
 });
 
-// Start server for Render deployment
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-  console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`🔗 Health Check: http://localhost:${PORT}/health`);
-});
+// In serverless environments like Vercel, we should NOT call app.listen().
+// Vercel will handle the HTTP server and invoke the exported app as a handler.
+// Only start a local server when running locally (e.g., npm run dev).
+if (!process.env.VERCEL && process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`🌐 URL: http://localhost:${PORT}`);
+    console.log(`🔗 Health Check: http://localhost:${PORT}/health`);
+  });
+}
 
-export default app;
+export default app;// Force Vercel deployment - Wed Sep 03 22:20:00 IST 2025
