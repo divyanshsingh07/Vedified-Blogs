@@ -124,14 +124,14 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="flex-1 space-y-6 p-4 sm:p-6 overflow-x-hidden">
+    <div className="flex-1 space-y-6 p-4 sm:p-6 overflow-x-hidden bg-gray-100">
       {/* Header with Refresh Button */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-2xl font-black text-black">Dashboard</h1>
         <button
           onClick={fetchDashboardData}
           disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-hover-primary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-bold uppercase tracking-wide border-2 border-black"
         >
           {loading ? (
             <>
@@ -153,12 +153,12 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Total Blogs Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-lg border-2 border-black cursor-pointer hover:shadow-xl hover:border-black transition-all duration-200 group"
           onClick={navigateToBlogs}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-blue-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
-              <img src={assets.tick_icon} alt="blogs" className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="p-2 sm:p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
+              <img src={assets.tick_icon} alt="blogs" className="w-5 h-5 sm:w-6 sm:h-6 filter invert" />
             </div>
             <div className="ml-3 sm:ml-4">
               {loading ? (
@@ -168,13 +168,13 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.blogCount}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Blogs</p>
+                  <p className="text-xl sm:text-2xl font-black text-black group-hover:text-gray-800 transition-colors">{dashboardData.blogCount}</p>
+                  <p className="text-sm sm:text-base text-gray-800 group-hover:text-black transition-colors font-semibold">Blogs</p>
                 </>
               )}
             </div>
             <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </div>
@@ -183,12 +183,12 @@ const Dashboard = () => {
 
         {/* Total Comments Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-lg border-2 border-black cursor-pointer hover:shadow-xl hover:border-black transition-all duration-200 group"
           onClick={navigateToComments}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-green-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
-              <img src={assets.comment_icon} alt="comments" className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="p-2 sm:p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
+              <img src={assets.comment_icon} alt="comments" className="w-5 h-5 sm:w-6 sm:h-6 filter invert" />
             </div>
             <div className="ml-3 sm:ml-4">
               {loading ? (
@@ -198,13 +198,13 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.commentCount}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Comments</p>
+                  <p className="text-xl sm:text-2xl font-black text-black group-hover:text-gray-800 transition-colors">{dashboardData.commentCount}</p>
+                  <p className="text-sm sm:text-base text-gray-800 group-hover:text-black transition-colors font-semibold">Comments</p>
                 </>
               )}
             </div>
             <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </div>
@@ -213,12 +213,12 @@ const Dashboard = () => {
 
         {/* Total Drafts Card */}
         <div 
-          className="bg-white p-4 sm:p-6 rounded-lg shadow-sm border border-gray-200 cursor-pointer hover:shadow-md hover:border-hover-primary transition-all duration-200 group sm:col-span-2 lg:col-span-1"
+          className="bg-white p-4 sm:p-6 rounded-lg shadow-lg border-2 border-black cursor-pointer hover:shadow-xl hover:border-black transition-all duration-200 group sm:col-span-2 lg:col-span-1"
           onClick={navigateToDrafts}
         >
           <div className="flex items-center">
-            <div className="p-2 sm:p-3 bg-yellow-100 rounded-lg group-hover:bg-hover-primary/20 transition-colors">
-              <img src={assets.add_icon} alt="drafts" className="w-5 h-5 sm:w-6 sm:h-6" />
+            <div className="p-2 sm:p-3 bg-black rounded-lg group-hover:bg-gray-800 transition-colors">
+              <img src={assets.add_icon} alt="drafts" className="w-5 h-5 sm:w-6 sm:h-6 filter invert" />
             </div>
             <div className="ml-3 sm:ml-4">
               {loading ? (
@@ -228,13 +228,13 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <>
-                  <p className="text-xl sm:text-2xl font-bold text-gray-900 group-hover:text-hover-primary transition-colors">{dashboardData.draftBlogs}</p>
-                  <p className="text-sm sm:text-base text-gray-600 group-hover:text-hover-primary transition-colors">Drafts</p>
+                  <p className="text-xl sm:text-2xl font-black text-black group-hover:text-gray-800 transition-colors">{dashboardData.draftBlogs}</p>
+                  <p className="text-sm sm:text-base text-gray-800 group-hover:text-black transition-colors font-semibold">Drafts</p>
                 </>
               )}
             </div>
             <div className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg className="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
             </div>
@@ -244,16 +244,16 @@ const Dashboard = () => {
 
 
       {/* Latest Blogs Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="p-4 sm:p-6 border-b border-gray-200">
+      <div className="bg-white rounded-lg shadow-lg border-2 border-black">
+        <div className="p-4 sm:p-6 border-b-2 border-black">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className="w-1 h-4 sm:h-6 bg-blue-600 rounded-full mr-2 sm:mr-3"></div>
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Latest Blogs</h2>
+              <div className="w-1 h-4 sm:h-6 bg-black rounded-full mr-2 sm:mr-3"></div>
+              <h2 className="text-lg sm:text-xl font-black text-black">Latest Blogs</h2>
             </div>
             {loading && (
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+              <div className="flex items-center gap-2 text-sm text-gray-800 font-semibold">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black"></div>
                 Loading...
               </div>
             )}
@@ -263,43 +263,43 @@ const Dashboard = () => {
         {/* Mobile Card View */}
         <div className="block lg:hidden">
           {loading ? (
-            <div className="p-4 text-center text-gray-500">Loading blogs...</div>
+            <div className="p-4 text-center text-gray-800 font-semibold">Loading blogs...</div>
           ) : dashboardData.recentBlogs.length === 0 ? (
-            <div className="p-4 text-center text-gray-500">No recent blogs found.</div>
+            <div className="p-4 text-center text-gray-800 font-semibold">No recent blogs found.</div>
           ) : (
             dashboardData.recentBlogs.map((blog, index) => (
-              <div key={blog._id} className="p-3 sm:p-4 border-b border-gray-200 last:border-b-0">
+              <div key={blog._id} className="p-3 sm:p-4 border-b-2 border-black last:border-b-0">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium mr-3">
+                    <span className="w-6 h-6 bg-black text-white rounded-full flex items-center justify-center text-xs font-bold mr-3">
                       {index + 1}
                     </span>
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-full ${
                       blog.isPublished 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
+                        ? 'bg-green-100 text-green-800 border border-green-800' 
+                        : 'bg-yellow-100 text-yellow-800 border border-yellow-800'
                     }`}>
                       {blog.isPublished ? 'Published' : 'Draft'}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500 text-right">
+                  <div className="text-xs text-gray-800 text-right font-semibold">
                     {formatDate(blog.createdAt)}
                   </div>
                 </div>
                 
                 <div className="mb-3">
-                  <p className="text-sm font-medium text-gray-900 mb-2">{blog.title}</p>
+                  <p className="text-sm font-bold text-black mb-2">{blog.title}</p>
                 </div>
                 
                 <div className="flex gap-2">
                   <button 
-                    className="flex-1 text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 px-3 py-2 rounded-md text-xs font-medium transition-colors"
+                    className="flex-1 text-gray-800 hover:text-black bg-amber-100 hover:bg-amber-200 px-3 py-2 rounded-md text-xs font-bold transition-colors border border-black"
                     onClick={() => handleToggleStatus(blog._id)}
                   >
                     {blog.isPublished ? 'Unpublish' : 'Publish'}
                   </button>
                   <button 
-                    className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+                    className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 w-10 h-10 rounded-full flex items-center justify-center transition-colors border border-red-600"
                     onClick={() => handleDelete(blog._id)}
                   >
                     <img src={assets.bin_icon} alt="delete" className="w-4 h-5" />
@@ -313,54 +313,54 @@ const Dashboard = () => {
         {/* Desktop Table View */}
         <div className="hidden lg:block overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-amber-100">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blog Title</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">#</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Blog Title</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Date</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-black">
               {loading ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 whitespace-nowrap text-center text-gray-500">Loading blogs...</td>
+                  <td colSpan="5" className="px-6 py-4 whitespace-nowrap text-center text-gray-800 font-semibold">Loading blogs...</td>
                 </tr>
               ) : dashboardData.recentBlogs.length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 whitespace-nowrap text-center text-gray-500">No recent blogs found.</td>
+                  <td colSpan="5" className="px-6 py-4 whitespace-nowrap text-center text-gray-800 font-semibold">No recent blogs found.</td>
                 </tr>
               ) : (
                 dashboardData.recentBlogs.map((blog, index) => (
-                  <tr key={blog._id} className="hover:bg-hover-primary/10">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={blog._id} className="hover:bg-amber-100">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black">{index + 1}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black">
                       <div className="max-w-[300px]">
                         <p className="truncate">{blog.title}</p>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-semibold">
                       {formatDate(blog.createdAt)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-full ${
                         blog.isPublished 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-yellow-100 text-yellow-800'
+                          ? 'bg-green-100 text-green-800 border border-green-800' 
+                          : 'bg-yellow-100 text-yellow-800 border border-yellow-800'
                       }`}>
                         {blog.isPublished ? 'Published' : 'Draft'}
                       </span>
                     </td>
                     <td className=" cursor-pointer px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <button 
-                        className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 px-3 py-1 rounded-md text-xs transition-colors"
+                        className="text-gray-800 hover:text-black bg-amber-100 hover:bg-amber-200 px-3 py-1 rounded-md text-xs transition-colors font-bold border border-black"
                         onClick={() => handleToggleStatus(blog._id)}
                       >
                         {blog.isPublished ? 'Unpublish' : 'Publish'}
                       </button>
                       <button 
-                        className="text-gray-600 hover:text-hover-primary bg-gray-100 hover:bg-hover-primary/20 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                        className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors border border-red-600"
                         onClick={() => handleDelete(blog._id)}
                       >
                         <img src={assets.bin_icon} alt="delete" className="w-4 h-5 cursor-pointer" />

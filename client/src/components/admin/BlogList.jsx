@@ -55,14 +55,14 @@ const BlogList = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Blog List</h1>
-        <button className="mt-4 sm:mt-0 bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
+        <h1 className="text-xl sm:text-2xl font-black text-black">Blog List</h1>
+        <button className="mt-4 sm:mt-0 bg-black text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm sm:text-base font-bold uppercase tracking-wide border-2 border-black">
           Add New Blog
         </button>
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-3 sm:p-4 rounded-lg shadow-lg border-2 border-black">
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           {/* Search */}
           <div className="flex-1">
@@ -71,7 +71,7 @@ const BlogList = () => {
               placeholder="Search blogs by title or category..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              className="w-full px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base font-semibold"
             />
           </div>
           
@@ -80,7 +80,7 @@ const BlogList = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+              className="w-full sm:w-auto px-3 py-2 border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black text-sm sm:text-base font-semibold"
             >
               <option value="all">All Status</option>
               <option value="published">Published</option>
@@ -91,49 +91,49 @@ const BlogList = () => {
       </div>
 
       {/* Blogs Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-lg shadow-lg border-2 border-black overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50">
+            <thead className="bg-amber-100">
               <tr>
-                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#</th>
-                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Blog Title</th>
-                <th className="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                <th className="hidden sm:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">#</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Blog Title</th>
+                <th className="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Category</th>
+                <th className="hidden sm:table-cell px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Date</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Status</th>
+                <th className="px-3 sm:px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-black">
               {filteredBlogs.map((blog, index) => (
-                <tr key={blog._id} className="hover:bg-gray-50">
-                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">{index + 1}</td>
+                <tr key={blog._id} className="hover:bg-amber-100">
+                  <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-bold text-black">{index + 1}</td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <img 
                         src={blog.image} 
                         alt={blog.title} 
-                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover mr-2 sm:mr-3"
+                        className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover mr-2 sm:mr-3 border-2 border-black"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900 truncate">{blog.title}</p>
-                        <p className="text-xs text-gray-500 truncate hidden sm:block">{blog.subTitle}</p>
+                        <p className="text-sm font-bold text-black truncate">{blog.title}</p>
+                        <p className="text-xs text-gray-800 truncate hidden sm:block font-semibold">{blog.subTitle}</p>
                       </div>
                     </div>
                   </td>
                   <td className="hidden md:table-cell px-3 sm:px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                    <span className="inline-flex px-2 py-1 text-xs font-bold rounded-full bg-black text-white">
                       {blog.category}
                     </span>
                   </td>
-                  <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="hidden sm:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-semibold">
                     {formatDate(blog.createdAt)}
                   </td>
                   <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    <span className={`inline-flex px-2 py-1 text-xs font-bold rounded-full ${
                       blog.isPublished 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
+                        ? 'bg-green-100 text-green-800 border border-green-800' 
+                        : 'bg-yellow-100 text-yellow-800 border border-yellow-800'
                     }`}>
                       {blog.isPublished ? 'Published' : 'Draft'}
                     </span>
@@ -142,16 +142,16 @@ const BlogList = () => {
                     <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
                       <button 
                         onClick={() => handleToggleStatus(blog._id)}
-                        className="text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors"
+                        className="text-gray-800 hover:text-black bg-amber-100 hover:bg-amber-200 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors font-bold border border-black"
                       >
                         {blog.isPublished ? 'Unpublish' : 'Publish'}
                       </button>
-                      <button className="text-blue-600 hover:text-blue-800 bg-blue-100 hover:bg-blue-200 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors">
+                      <button className="text-black hover:text-gray-800 bg-white hover:bg-amber-100 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors font-bold border border-black">
                         Edit
                       </button>
                       <button 
                         onClick={() => handleDelete(blog._id)}
-                        className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors"
+                        className="text-red-600 hover:text-red-800 bg-red-100 hover:bg-red-200 px-2 sm:px-3 py-1 rounded-md text-xs transition-colors font-bold border border-red-600"
                       >
                         Delete
                       </button>
@@ -166,7 +166,7 @@ const BlogList = () => {
         {/* Empty State */}
         {filteredBlogs.length === 0 && (
           <div className="text-center py-8 sm:py-12">
-            <p className="text-gray-500 text-sm sm:text-base">No blogs found matching your criteria.</p>
+            <p className="text-gray-800 text-sm sm:text-base font-semibold">No blogs found matching your criteria.</p>
           </div>
         )}
       </div>

@@ -17,23 +17,23 @@ useEffect(() => {
 
   return (
     <div className={`sticky top-0 z-40 ${scrolled ? 'shadow-lg' : ''}`}>
-      <div className='backdrop-blur supports-[backdrop-filter]:bg-white/70 bg-white/80 border-b border-slate-200/60'>
+      <div className='bg-amber-50 border-b-2 border-black'>
         <div className='flex justify-between items-center py-3 md:py-4 max-w-7xl mx-auto px-4 sm:px-8 xl:px-12'>
-          <img onClick={()=> navigate('/')} src={assets.logo} alt='logo' className='w-20 sm:w-24 lg:w-28 cursor-pointer'/> 
+          <img onClick={()=> navigate('/')} src={assets.logo} alt='logo' className='w-16 sm:w-20 lg:w-24 cursor-pointer'/> 
 
           {/* Center nav removed as requested */}
 
           {token ? (
-            <button onClick={()=> navigate('/admin')} className='flex items-center gap-3 rounded-full px-2 py-1 pr-3 border border-slate-200 bg-white/80 hover:shadow-[0_0_26px_rgba(236,72,153,0.35)] hover:scale-[1.02] active:scale-100 transition-all'>
-              <span className='inline-flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-orange-500 to-fuchsia-600 ring-2 ring-white/60'>
-                <img src={assets.user_icon} alt='avatar' className='w-5 h-5 invert-0' />
+            <button onClick={()=> navigate('/admin')} className='flex items-center gap-2 rounded-full px-3 py-2 pr-4 border-2 border-black bg-white hover:bg-amber-100 hover:shadow-lg hover:scale-[1.02] active:scale-100 transition-all'>
+              <span className='inline-flex items-center justify-center w-7 h-7 rounded-full bg-black'>
+                <img src={assets.user_icon} alt='avatar' className='w-4 h-4 invert' />
               </span>
-              <span className='text-sm font-semibold text-slate-800 truncate max-w-[140px]'>
+              <span className='text-xs font-bold text-black truncate max-w-[120px]'>
                 {user?.name || user?.email || 'Account'}
               </span>
             </button>
           ) : (
-            <button onClick={()=> navigate('/admin')} className='flex items-center gap-2 rounded-full text-sm bg-gradient-to-r from-orange-500 via-pink-500 to-fuchsia-600 text-white px-6 py-2.5 mr-0 shadow-md hover:shadow-[0_0_30px_rgba(236,72,153,0.45)] hover:scale-[1.03] active:scale-100 transition-all'>
+            <button onClick={()=> navigate('/admin')} className='flex items-center gap-2 rounded-full text-xs bg-black text-white px-4 py-2 mr-0 shadow-lg hover:bg-gray-800 hover:shadow-xl hover:scale-[1.03] active:scale-100 transition-all border-2 border-black'>
               Login
               <img src={assets.arrow} alt="login" className='w-3' />
             </button>

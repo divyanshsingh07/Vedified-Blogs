@@ -1,13 +1,14 @@
-import blog_pic_1 from './blog_pic_1.png';
-import blog_pic_2 from './blog_pic_2.png';
-import blog_pic_3 from './blog_pic_3.png';
-import blog_pic_4 from './blog_pic_4.png';
-import blog_pic_5 from './blog_pic_5.png';
-import blog_pic_6 from './blog_pic_6.png';
-import blog_pic_7 from './blog_pic_7.png';
-import blog_pic_8 from './blog_pic_8.png';
-import blog_pic_9 from './blog_pic_9.png';
-import blog_pic_10 from './blog_pic_10.png';
+// Blog images - using placeholder URLs since files don't exist
+const blog_pic_1 = 'https://via.placeholder.com/800x400/6366f1/ffffff?text=Blog+1';
+const blog_pic_2 = 'https://via.placeholder.com/800x400/8b5cf6/ffffff?text=Blog+2';
+const blog_pic_3 = 'https://via.placeholder.com/800x400/ec4899/ffffff?text=Blog+3';
+const blog_pic_4 = 'https://via.placeholder.com/800x400/f97316/ffffff?text=Blog+4';
+const blog_pic_5 = 'https://via.placeholder.com/800x400/10b981/ffffff?text=Blog+5';
+const blog_pic_6 = 'https://via.placeholder.com/800x400/3b82f6/ffffff?text=Blog+6';
+const blog_pic_7 = 'https://via.placeholder.com/800x400/ef4444/ffffff?text=Blog+7';
+const blog_pic_8 = 'https://via.placeholder.com/800x400/84cc16/ffffff?text=Blog+8';
+const blog_pic_9 = 'https://via.placeholder.com/800x400/f59e0b/ffffff?text=Blog+9';
+const blog_pic_10 = 'https://via.placeholder.com/800x400/8b5cf6/ffffff?text=Blog+10';
 import facebook_icon from './facebook_icon.svg'
 import googleplus_icon from './googleplus_icon.svg'
 import twitter_icon from './twitter_icon.svg'
@@ -58,7 +59,7 @@ export const assets = {
     dashboard_icon_3,
     dashboard_icon_4,
 }
-export const blogCategories = ['All', 'Technology', 'Startup', 'Lifestyle', 'Finance']
+export const blogCategories = ['All', 'Technology', 'Startup', 'Lifestyle', 'Finance', 'Politics', 'Cricket', 'Geography']
 
 export const blog_data = [
     {

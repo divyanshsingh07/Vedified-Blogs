@@ -38,13 +38,13 @@ const WriterLogin = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-white to-hover-primary/5 p-4">
-      <div className="relative bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
-        <h1 className="text-2xl font-bold text-center mb-6">Writer Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-amber-50 p-4">
+      <div className="relative bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-black">
+        <h1 className="text-2xl font-black text-center mb-6 text-black">Writer Login</h1>
         <button
           onClick={handleGoogleLogin}
           disabled={isLoading}
-          className="w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 rounded-xl hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200 font-semibold shadow-sm hover:shadow-md disabled:opacity-50"
+          className="w-full bg-white border-2 border-black text-black py-3 px-4 rounded-xl hover:bg-amber-100 hover:border-black focus:outline-none focus:ring-2 focus:ring-black transition-all duration-200 font-bold uppercase tracking-wide shadow-lg hover:shadow-xl disabled:opacity-50"
         >
           {isLoading ? 'Signing in...' : 'Continue with Google'}
         </button>

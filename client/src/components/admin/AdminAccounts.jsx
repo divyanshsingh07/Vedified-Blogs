@@ -60,53 +60,53 @@ const AdminAccounts = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-lg border-2 border-black p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-gray-900">Admin Accounts</h2>
+        <h2 className="text-xl font-black text-black">Admin Accounts</h2>
         <button
           onClick={fetchAdminAccounts}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-hover-primary transition-colors text-sm"
+          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm font-bold uppercase tracking-wide border-2 border-black"
         >
           Refresh
         </button>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-black">
+          <thead className="bg-amber-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">
                 Email
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">
                 Role
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold text-black uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-black">
             {adminAccounts.map((admin, index) => (
-              <tr key={index} className="hover:bg-hover-primary/10">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <tr key={index} className="hover:bg-amber-100">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-black">
                   {admin.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-semibold">
                   {admin.email}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  <span className="inline-flex px-2 py-1 text-xs font-bold rounded-full bg-black text-white">
                     {admin.role}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <button
                     onClick={() => handleDeleteAdmin(admin.email)}
-                    className="text-red-600 hover:text-red-900 transition-colors duration-200"
+                    className="text-red-600 hover:text-red-800 transition-colors duration-200 border border-red-600 hover:border-red-800 px-2 py-1 rounded"
                     title="Delete Admin Account"
                   >
                     <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -120,9 +120,9 @@ const AdminAccounts = () => {
         </table>
       </div>
 
-      <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-        <h3 className="text-sm font-medium text-blue-800 mb-2">Login Credentials:</h3>
-        <div className="space-y-2 text-sm text-blue-700">
+      <div className="mt-6 p-4 bg-amber-100 border-2 border-black rounded-lg">
+        <h3 className="text-sm font-bold text-black mb-2">Login Credentials:</h3>
+        <div className="space-y-2 text-sm text-gray-800 font-semibold">
           <p><strong>Blog Manager:</strong> manager@vedified.com / manager123</p>
           <p><strong>Test Account:</strong> test@vedified.com / test123</p>
           <p><strong>Demo User:</strong> demo@vedified.com / demo123</p>
