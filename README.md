@@ -4,7 +4,7 @@ A modern, full-stack blog management platform built with React and Node.js, feat
 
 ## 🌟 Live Demo
 
-- **Frontend**: [https://vedified-blogs.vercel.app/](https://vedified.vercel)
+- **Frontend**: [https://vedified-blogs.vercel.app/](https://vedified-blogs.vercel.app/)
 - **Admin Panel**: Login with demo credentials below
 
 ## 🚀 Tech Stack
