@@ -37,67 +37,84 @@ A modern, full-stack blog management platform built with React and Node.js, feat
 ```
 Vedified/
 ├── client/                          # Frontend React application
-│   ├── public/                      # Static assets
-│   │   ├── vite.svg
-│   │   └── favicon files
-│   ├── src/
-│   │   ├── assets/                  # Images, icons, and static files
-│   │   │   ├── blog_pic_*.png       # Blog images
-│   │   │   ├── dashboard_icon_*.svg # Dashboard icons
-│   │   │   ├── logo.svg             # Application logo
-│   │   │   └── ...                  # Other assets
-│   │   ├── components/              # Reusable UI components
-│   │   │   ├── admin/               # Admin-specific components
-│   │   │   │   ├── AdminAccounts.jsx
-│   │   │   │   ├── BlogList.jsx
-│   │   │   │   ├── Login.jsx
-│   │   │   │   ├── Sidebar.jsx
-│   │   │   │   └── Signup.jsx
-│   │   │   ├── BlogCard.jsx         # Blog post card component
-│   │   │   ├── BlogList.jsx         # Blog listing component
-│   │   │   ├── Footer.jsx           # Footer component
-│   │   │   ├── Header.jsx           # Header component
-│   │   │   ├── Navbar.jsx           # Navigation component
-│   │   │   └── Newsletter.jsx       # Newsletter signup
-│   │   ├── contexts/                # React context providers
-│   │   │   └── AppContext.jsx       # Global application state
-│   │   ├── pages/                   # Page components
-│   │   │   ├── admin/               # Admin panel pages
-│   │   │   │   ├── AddBlog.jsx      # Create new blog post
-│   │   │   │   ├── BlogList.jsx     # Manage blog posts
-│   │   │   │   ├── Comments.jsx     # Manage comments
-│   │   │   │   ├── Dashboard.jsx    # Admin dashboard
-│   │   │   │   └── Layout.jsx       # Admin layout wrapper
-│   │   │   ├── Blog.jsx             # Individual blog post view
-│   │   │   └── Home.jsx             # Homepage
-│   │   ├── App.jsx                  # Main application component
-│   │   ├── index.css                # Global styles
-│   │   └── main.jsx                 # Application entry point
-│   ├── package.json                 # Frontend dependencies
+│   ├── Dockerfile
+│   ├── vercel.json
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── index.html
+│   ├── vite.config.js               # Vite configuration
 │   ├── tailwind.config.js           # Tailwind CSS configuration
-│   └── vite.config.js               # Vite configuration
+│   ├── eslint.config.js             # ESLint configuration
+│   ├── public/                      # Static assets served as-is
+│   └── src/
+│       ├── assets/                  # Images, icons, and static files
+│       │   ├── add_icon.svg
+│       │   ├── arrow.svg
+│       │   ├── ...
+│       ├── components/              # Reusable UI components
+│       │   ├── admin/               # Admin-specific components
+│       │   │   ├── AdminAccounts.jsx
+│       │   │   ├── Login.jsx
+│       │   │   └── Sidebar.jsx
+│       │   ├── user/
+│       │   │   └── WriterLogin.jsx
+│       │   ├── BlogCard.jsx
+│       │   ├── BlogList.jsx
+│       │   ├── Footer.jsx
+│       │   ├── Header.jsx
+│       │   └── Navbar.jsx
+│       ├── configs/
+│       │   └── firebase.js          # Firebase client config
+│       ├── contexts/
+│       │   └── AppContext.jsx       # Global application state
+│       ├── pages/                   # Page components
+│       │   ├── admin/               # Admin panel pages
+│       │   │   ├── AddBlog.jsx
+│       │   │   ├── BlogList.jsx
+│       │   │   ├── Comments.jsx
+│       │   │   ├── Dashboard.jsx
+│       │   │   └── Layout.jsx
+│       │   ├── writer/
+│       │   │   └── WriterDashboard.jsx
+│       │   ├── Blog.jsx
+│       │   └── Home.jsx
+│       ├── App.jsx                  # Main application component
+│       ├── index.css                # Global styles
+│       └── main.jsx                 # Application entry point
 │
 ├── server/                          # Backend Node.js application
+│   ├── Dockerfile
+│   ├── vercel.json
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── server.js                    # Server entry point
 │   ├── configs/                     # Configuration files
 │   │   ├── db.js                    # Database connection
+│   │   ├── firebaseAdmin.js         # Firebase Admin SDK config
 │   │   ├── gemini.js                # Google Gemini AI config
 │   │   └── imagekit.js              # ImageKit configuration
-│   ├── controlers/                  # Route controllers (Note: typo in folder name)
-│   │   ├── admincontrole.js         # Admin operations
-│   │   └── blogControler.js         # Blog operations
-│   ├── middleware/                   # Express middleware
-│   │   ├── auth.js                  # Authentication middleware
-│   │   └── multur.js                # File upload middleware
+│   ├── controlers/                  # Route controllers (note: folder name contains a typo)
+│   │   ├── admincontrole.js
+│   │   └── blogControler.js
+│   ├── middleware/                  # Express middleware
+│   │   └── auth.js                  # Authentication middleware
 │   ├── models/                      # Database models
-│   │   ├── blog.js                  # Blog post model
-│   │   └── comments.js              # Comment model
+│   │   ├── blog.js
+│   │   ├── comments.js
+│   │   └── user.js
 │   ├── routes/                      # API routes
-│   │   ├── adminRoutes.js           # Admin API endpoints
-│   │   └── blogRouter.js            # Blog API endpoints
-│   ├── uploads/                     # File upload directory
-│   ├── package.json                 # Backend dependencies
-│   └── server.js                    # Server entry point
+│   │   ├── adminRoutes.js
+│   │   └── blogRouter.js
+│   └── uploads/                     # File upload directory
 │
+├── k8s/                             # Kubernetes manifests
+│   ├── backend-config.yaml
+│   ├── backend-deployment.yml
+│   ├── frontend-deployment.yml
+│   ├── mongo-deployment.yml
+│   └── namespace.yaml
+├── docker-compose.yml               # Local development with Docker
+├── .gitignore                       # Git ignore rules
 └── README.md                        # This file
 ```
 
