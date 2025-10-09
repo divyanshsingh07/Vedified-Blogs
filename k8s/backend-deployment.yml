@@ -13,8 +13,9 @@ spec:
         app: vedified-backend
     spec:
       containers:
-        - name: vedified-backend
-          image: arshthakurs7/backend:latest
+        - name: backend
+          image: arshthakur07/backend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 4000
           envFrom:

@@ -13,8 +13,9 @@ spec:
         app: vedified-frontend
     spec:
       containers:
-        - name: vedified-frontend
-          image: arshthakurs7/frontend:latest
+        - name: frontend
+          image: arshthakur07/frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           env:
