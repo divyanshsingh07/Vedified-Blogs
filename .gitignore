@@ -34,4 +34,4 @@ client/.env.*
 
 # Vercel
 .vercel
-/k8s
+k8s/
