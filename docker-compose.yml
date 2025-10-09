@@ -11,7 +11,10 @@ services:
       - mongo
 
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        - VITE_API_URL=http://backend:4000
     container_name: vedified-frontend
     ports:
       - "3000:80"
